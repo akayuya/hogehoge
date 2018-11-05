@@ -41,6 +41,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private float m_NextStep;
         private bool m_Jumping;
         private AudioSource m_AudioSource;
+        private Transform scale_size;
+
+        private bool shagami;
 
         // Use this for initialization
         private void Start()
@@ -55,7 +58,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_Jumping = false;
             m_AudioSource = GetComponent<AudioSource>();
 			m_MouseLook.Init(transform , m_Camera.transform);
+            scale_size = this.transform;
+
         }
+
 
 
         // Update is called once per frame
@@ -81,8 +87,23 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
 
             m_PreviouslyGrounded = m_CharacterController.isGrounded;
-        }
 
+
+            shagami = Input.GetKey("c");
+
+            if(shagami){
+                
+                
+                Vector3 scale = scale_size.localScale;
+
+                scale.y = 0.5f;
+
+                print(scale_size.localScale);
+
+                scale_size.localScale = scale;
+
+            }
+        }
 
         private void PlayLandingSound()
         {
@@ -132,6 +153,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
             m_MouseLook.UpdateCursorLock();
         }
+
 
 
         private void PlayJumpSound()
