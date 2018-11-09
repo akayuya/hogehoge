@@ -43,7 +43,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private AudioSource m_AudioSource;
         private Transform playerTransform;
         private bool _IsCrouched; 
-        private bool _IsCrouching;
 
         // Use this for initialization
         private void Start()
@@ -86,9 +85,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
             m_PreviouslyGrounded = m_CharacterController.isGrounded;
 
-            _IsCrouched = Input.GetKey("c");
-
-            if (_IsCrouched)
+            if (Input.GetKey("c"))
             {
           
                 Vector3 playerScale = playerTransform.localScale;
@@ -97,7 +94,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
                 playerTransform.localScale = playerScale;
 
-                _IsCrouching = true;
+                _IsCrouched = true;
+                
             }
         }
 
@@ -242,15 +240,16 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
             if(m_IsWalking){
                 speed = m_WalkSpeed;
-                if(_IsCrouching){
+                if(_IsCrouched){
                     speed = m_WalkSpeed * 0.25f;
+                    
                 }
                 else{
                     speed = m_WalkSpeed;
                 }
             } 
             else {
-                if(_IsCrouching){
+                if(_IsCrouched){
                     speed = m_RunSpeed * 0.25f;
                 }
                 else{
