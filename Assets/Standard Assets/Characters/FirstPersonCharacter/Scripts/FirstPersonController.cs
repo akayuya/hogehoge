@@ -13,7 +13,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         [SerializeField] private bool m_IsWalking;
         [SerializeField] private float m_WalkSpeed;
         [SerializeField] private float m_RunSpeed;
-        [SerializeField] private bool _iscrouchspeed;
+        [SerializeField] private bool _IsCrouching;
 
         [SerializeField] [Range(0f, 1f)] private float m_RunstepLenghten;
         [SerializeField] private float m_JumpSpeed;
@@ -43,8 +43,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private float m_NextStep;
         private bool m_Jumping;
         private AudioSource m_AudioSource;
-        private Transform crouchsize;
-        private bool _iscrouch;
+        private Transform playerTransform;
+        private bool _isCrouched;
 
         // Use this for initialization
         private void Start()
@@ -59,7 +59,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_Jumping = false;
             m_AudioSource = GetComponent<AudioSource>();
             m_MouseLook.Init(transform, m_Camera.transform);
-            crouchsize = this.transform;
+            playerTransform = this.transform;
 
         }
     
@@ -87,18 +87,18 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
             m_PreviouslyGrounded = m_CharacterController.isGrounded;
 
-            _iscrouch = Input.GetKey("c");
+            _isCrouched = Input.GetKey("c");
 
-            if (_iscrouch)
+            if (_isCrouched)
             {
           
-                Vector3 crouchscale = crouchsize.localScale;
+                Vector3 playerScale = playerTransform.localScale;
 
-                crouchscale.y = 0.5f;
+                playerScale.y = 0.5f;
 
-                crouchsize.localScale = crouchscale;
+                playerTransform.localScale = playerScale;
 
-                _iscrouchspeed = true;
+                _IsCrouching = true;
             }
         }
 
@@ -243,7 +243,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
             if(m_IsWalking){
                 speed = m_WalkSpeed;
-                if(_iscrouchspeed){
+                if(_IsCrouching){
                     speed = m_WalkSpeed * 0.25f;
                 }
                 else{
@@ -251,7 +251,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 }
             } 
             else {
-                if(_iscrouchspeed){
+                if(_IsCrouching){
                     speed = m_RunSpeed * 0.25f;
                 }
                 else{
