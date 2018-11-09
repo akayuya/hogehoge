@@ -13,8 +13,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
         [SerializeField] private bool m_IsWalking;
         [SerializeField] private float m_WalkSpeed;
         [SerializeField] private float m_RunSpeed;
-        [SerializeField] private bool _IsCrouching;
-
         [SerializeField] [Range(0f, 1f)] private float m_RunstepLenghten;
         [SerializeField] private float m_JumpSpeed;
         [SerializeField] private float m_StickToGroundForce;
@@ -44,7 +42,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private bool m_Jumping;
         private AudioSource m_AudioSource;
         private Transform playerTransform;
-        private bool _IsCrouched;
+        private bool _IsCrouched; 
+        private bool _IsCrouching;
 
         // Use this for initialization
         private void Start()
