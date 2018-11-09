@@ -13,7 +13,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         [SerializeField] private bool m_IsWalking;
         [SerializeField] private float m_WalkSpeed;
         [SerializeField] private float m_RunSpeed;
-        [SerializeField] private bool IsCrouching;
+        [SerializeField] private bool _IsCrouching;
 
         [SerializeField] [Range(0f, 1f)] private float m_RunstepLenghten;
         [SerializeField] private float m_JumpSpeed;
@@ -44,7 +44,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private bool m_Jumping;
         private AudioSource m_AudioSource;
         private Transform playerTransform;
-        private bool _isCrouched;
+        private bool _IsCrouched;
 
         // Use this for initialization
         private void Start()
@@ -87,9 +87,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
             m_PreviouslyGrounded = m_CharacterController.isGrounded;
 
-            _isCrouched = Input.GetKey("c");
+            _IsCrouched = Input.GetKey("c");
 
-            if (_isCrouched)
+            if (_IsCrouched)
             {
           
                 Vector3 playerScale = playerTransform.localScale;
@@ -98,7 +98,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
                 playerTransform.localScale = playerScale;
 
-                IsCrouching = true;
+                _IsCrouching = true;
             }
         }
 
@@ -243,7 +243,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
             if(m_IsWalking){
                 speed = m_WalkSpeed;
-                if(IsCrouching){
+                if(_IsCrouching){
                     speed = m_WalkSpeed * 0.25f;
                 }
                 else{
@@ -251,7 +251,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 }
             } 
             else {
-                if(IsCrouching){
+                if(_IsCrouching){
                     speed = m_RunSpeed * 0.25f;
                 }
                 else{
