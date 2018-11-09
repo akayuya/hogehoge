@@ -43,8 +43,13 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private float m_NextStep;
         private bool m_Jumping;
         private AudioSource m_AudioSource;
+<<<<<<< HEAD
         private Transform playerTransform;
         private bool _isCrouched;
+=======
+        private Transform PlayerTransform;
+        private bool _isCrouched; 
+>>>>>>> 365b7470d73b97a752b134fd33f2d13277116d5d
 
         // Use this for initialization
         private void Start()
@@ -59,7 +64,11 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_Jumping = false;
             m_AudioSource = GetComponent<AudioSource>();
             m_MouseLook.Init(transform, m_Camera.transform);
+<<<<<<< HEAD
             playerTransform = this.transform;
+=======
+            PlayerTransform = this.transform;
+>>>>>>> 365b7470d73b97a752b134fd33f2d13277116d5d
 
         }
     
@@ -92,11 +101,21 @@ namespace UnityStandardAssets.Characters.FirstPerson
             if (_isCrouched)
             {
           
+<<<<<<< HEAD
                 Vector3 playerScale = playerTransform.localScale;
 
                 playerScale.y = 0.5f;
 
                 playerTransform.localScale = playerScale;
+=======
+                Vector3 PlayerScale = PlayerTransform.localScale;
+
+                PlayerScale.y = 0.5f;
+
+                PlayerTransform.localScale = PlayerScale;
+            
+
+>>>>>>> 365b7470d73b97a752b134fd33f2d13277116d5d
 
                 _IsCrouching = true;
             }
