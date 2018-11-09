@@ -13,7 +13,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         [SerializeField] private bool m_IsWalking;
         [SerializeField] private float m_WalkSpeed;
         [SerializeField] private float m_RunSpeed;
-        [SerializeField] private bool _IsCrouching;
+        [SerializeField] private bool IsCrouching;
 
         [SerializeField] [Range(0f, 1f)] private float m_RunstepLenghten;
         [SerializeField] private float m_JumpSpeed;
@@ -98,7 +98,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
                 playerTransform.localScale = playerScale;
 
-                _IsCrouching = true;
+                IsCrouching = true;
             }
         }
 
@@ -243,7 +243,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
             if(m_IsWalking){
                 speed = m_WalkSpeed;
-                if(_IsCrouching){
+                if(IsCrouching){
                     speed = m_WalkSpeed * 0.25f;
                 }
                 else{
@@ -251,7 +251,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 }
             } 
             else {
-                if(_IsCrouching){
+                if(IsCrouching){
                     speed = m_RunSpeed * 0.25f;
                 }
                 else{
