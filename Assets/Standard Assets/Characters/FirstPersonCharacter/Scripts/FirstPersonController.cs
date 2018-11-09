@@ -13,7 +13,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         [SerializeField] private bool m_IsWalking;
         [SerializeField] private float m_WalkSpeed;
         [SerializeField] private float m_RunSpeed;
-        [SerializeField] private bool shagami_speed;
+        [SerializeField] private bool _iscrouchspeed;
 
         [SerializeField] [Range(0f, 1f)] private float m_RunstepLenghten;
         [SerializeField] private float m_JumpSpeed;
@@ -43,9 +43,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private float m_NextStep;
         private bool m_Jumping;
         private AudioSource m_AudioSource;
-        private Transform scale_size;
-
-        private bool shagami;
+        private Transform crouchsize;
+        private bool _iscrouch;
 
         // Use this for initialization
         private void Start()
@@ -60,7 +59,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_Jumping = false;
             m_AudioSource = GetComponent<AudioSource>();
             m_MouseLook.Init(transform, m_Camera.transform);
-            scale_size = this.transform;
+            crouchsize = this.transform;
 
         }
     
@@ -88,18 +87,18 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
             m_PreviouslyGrounded = m_CharacterController.isGrounded;
 
-            shagami = Input.GetKey("c");
+            _iscrouch = Input.GetKey("c");
 
-            if (shagami)
+            if (_iscrouch)
             {
           
-                Vector3 scale = scale_size.localScale;
+                Vector3 crouchscale = crouchsize.localScale;
 
-                scale.y = 0.5f;
+                crouchscale.y = 0.5f;
 
-                scale_size.localScale = scale;
+                crouchsize.localScale = crouchscale;
 
-                shagami_speed = true;
+                _iscrouchspeed = true;
             }
         }
 
@@ -244,7 +243,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
             if(m_IsWalking){
                 speed = m_WalkSpeed;
-                if(shagami_speed){
+                if(_iscrouchspeed){
                     speed = m_WalkSpeed * 0.25f;
                 }
                 else{
@@ -252,7 +251,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 }
             } 
             else {
-                if(shagami_speed){
+                if(_iscrouchspeed){
                     speed = m_RunSpeed * 0.25f;
                 }
                 else{
