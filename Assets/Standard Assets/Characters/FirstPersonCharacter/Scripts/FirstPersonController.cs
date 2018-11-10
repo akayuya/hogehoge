@@ -242,7 +242,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             
 
             if(m_IsWalking){
-                speed = m_WalkSpeed;
+    
                 if(_isCrouched){
                     speed = m_WalkSpeed * 0.25f;
                     
