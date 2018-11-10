@@ -42,6 +42,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private bool m_Jumping;
         private AudioSource m_AudioSource;
         private Transform playerTransform;
+        private Vector3 playerScale;
         private bool _IsCrouched; 
 
         // Use this for initialization
@@ -58,6 +59,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_AudioSource = GetComponent<AudioSource>();
             m_MouseLook.Init(transform, m_Camera.transform);
             playerTransform = this.transform;
+            playerScale = playerTransform.localScale;
 
         }
     
@@ -85,11 +87,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
             m_PreviouslyGrounded = m_CharacterController.isGrounded;
 
-            if (Input.GetKey("c"))
+            if (Input.GetKeyDown("c") && !_IsCrouched)
             {
           
-                Vector3 playerScale = playerTransform.localScale;
-
                 playerScale.y = 0.5f;
 
                 playerTransform.localScale = playerScale;
@@ -97,7 +97,18 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 _IsCrouched = true;
                 
             }
-        }
+            else if (Input.GetKeyDown("c") && _IsCrouched){
+
+                playerScale.y = 1f;
+
+                playerTransform.localScale = playerScale;
+
+                _IsCrouched = false;
+                
+            }
+    
+        
+        　　　}
 
         private void PlayLandingSound()
         {
@@ -146,14 +157,11 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_MouseLook.UpdateCursorLock();
         }
 
-
-
         private void PlayJumpSound()
         {
             m_AudioSource.clip = m_JumpSound;
             m_AudioSource.Play();
         }
-
 
         private void ProgressStepCycle(float speed)
         {
@@ -172,8 +180,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
             PlayFootStepAudio();
         }
-
-
         private void PlayFootStepAudio()
         {
             if (!m_CharacterController.isGrounded)
@@ -189,8 +195,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_FootstepSounds[n] = m_FootstepSounds[0];
             m_FootstepSounds[0] = m_AudioSource.clip;
         }
-
-
         private void UpdateCameraPosition(float speed)
         {
             Vector3 newCameraPosition;
