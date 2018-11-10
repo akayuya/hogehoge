@@ -41,9 +41,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private float m_NextStep;
         private bool m_Jumping;
         private AudioSource m_AudioSource;
-        private Transform playerTransform;
         private Vector3 playerScale;
-        private bool _IsCrouched; 
+        private bool _isCrouched; 
 
         // Use this for initialization
         private void Start()
@@ -58,14 +57,15 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_Jumping = false;
             m_AudioSource = GetComponent<AudioSource>();
             m_MouseLook.Init(transform, m_Camera.transform);
-            playerTransform = this.transform;
-            playerScale = playerTransform.localScale;
+            playerScale = this.transform.localScale;
 
-        }
+
+         }
     
         // Update is called once per frame
         private void Update()
         {
+    
             RotateView();
             // the jump state needs to read here to make sure it is not missed
             if (!m_Jump)
@@ -87,24 +87,23 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
             m_PreviouslyGrounded = m_CharacterController.isGrounded;
 
-            if (Input.GetKeyDown("c") && !_IsCrouched)
+            if (Input.GetKeyDown(KeyCode.C) && !_isCrouched)
             {
           
                 playerScale.y = 0.5f;
 
-                playerTransform.localScale = playerScale;
+                this.transform.localScale = playerScale;
 
-                _IsCrouched = true;
-                
+                _isCrouched = true;
             }
-            else if (Input.GetKeyDown("c") && _IsCrouched){
+            else if (Input.GetKeyDown(KeyCode.C) && _isCrouched){
+
 
                 playerScale.y = 1f;
 
-                playerTransform.localScale = playerScale;
+                this.transform.localScale = playerScale;
 
-                _IsCrouched = false;
-                
+                _isCrouched = false;
             }
     
         
@@ -244,7 +243,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
             if(m_IsWalking){
                 speed = m_WalkSpeed;
-                if(_IsCrouched){
+                if(_isCrouched){
                     speed = m_WalkSpeed * 0.25f;
                     
                 }
@@ -253,7 +252,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 }
             } 
             else {
-                if(_IsCrouched){
+                if(_isCrouched){
                     speed = m_RunSpeed * 0.25f;
                 }
                 else{
