@@ -11,7 +11,6 @@ public class ShotController : MonoBehaviour {
 	private GameObject shotReachEffect;
 	private Vector3 hitObj;
 	private float shotInterval;
-
 	private AudioSource shotSound;
 
 	
@@ -26,7 +25,7 @@ public class ShotController : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update () { 
 
 		shotInterval += Time.deltaTime;
 
@@ -38,7 +37,6 @@ public class ShotController : MonoBehaviour {
 			}
 			Instantiate(shotEffect,this.transform.position,Quaternion.identity);
 			Instantiate(shotReachEffect,hitObj,Quaternion.identity);
-			print(hitObj);
 			shotInterval = 0;
 	
 		}
