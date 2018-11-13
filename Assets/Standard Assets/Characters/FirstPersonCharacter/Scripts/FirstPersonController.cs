@@ -153,7 +153,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             ProgressStepCycle(speed);
             UpdateCameraPosition(speed);
 
-            m_MouseLook.UpdateCursorLock();
+            // m_MouseLook.UpdateCursorLock();
         }
 
         private void PlayJumpSound()
@@ -243,7 +243,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
             if(m_IsWalking){
     
-                if(_isCrouched){
+                if(_isCrouched){   
                     speed = m_WalkSpeed * 0.25f;
                     
                 }
