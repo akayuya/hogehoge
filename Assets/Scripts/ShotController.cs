@@ -9,7 +9,7 @@ public class ShotController : MonoBehaviour {
 	private RaycastHit gunShotHit;
 	private GameObject shotEffect;
 	private GameObject shotReachEffect;
-	private Vector3 hitObj;
+	private Vector3 hitObjPosition;
 	private float shotInterval;
 	private AudioSource shotSound;
 
@@ -33,12 +33,13 @@ public class ShotController : MonoBehaviour {
 			shotSound.Play();
 			shotRay = new Ray (Camera.main.transform.position,Camera.main.transform.forward);
 			if(Physics.Raycast(shotRay, out gunShotHit)){
-				hitObj = gunShotHit.point;
-				print(hitObj);
+				hitObjPosition = gunShotHit.point;
+			
 			
 			}
+			
 			Instantiate(shotEffect,this.transform.position,Quaternion.identity);
-			Instantiate(shotReachEffect,hitObj,Quaternion.identity);
+			Instantiate(shotReachEffect,hitObjPosition,Quaternion.identity);
 			shotInterval = 0;
 	
 		}
