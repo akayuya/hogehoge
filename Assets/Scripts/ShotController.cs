@@ -5,7 +5,7 @@ using UnityEngine;
 public class ShotController : MonoBehaviour {
 
 
-	private Ray gunShot;
+	private Ray shotRay;
 	private RaycastHit gunShotHit;
 	private GameObject shotEffect;
 	private GameObject shotReachEffect;
@@ -31,9 +31,11 @@ public class ShotController : MonoBehaviour {
 
 		if(Input.GetMouseButtonDown(0)　&& shotInterval >=0.5f){
 			shotSound.Play();
-			gunShot = new Ray (Camera.main.transform.position,Camera.main.transform.forward);
-			if(Physics.Raycast(gunShot, out gunShotHit)){
+			shotRay = new Ray (Camera.main.transform.position,Camera.main.transform.forward);
+			if(Physics.Raycast(shotRay, out gunShotHit)){
 				hitObj = gunShotHit.point;
+				print(hitObj);
+			
 			}
 			Instantiate(shotEffect,this.transform.position,Quaternion.identity);
 			Instantiate(shotReachEffect,hitObj,Quaternion.identity);
