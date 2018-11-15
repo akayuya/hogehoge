@@ -16,7 +16,7 @@ public class ShotController : MonoBehaviour
     private GameObject shotReachEffect;
     private Vector3 hitObjPosition;
     private float shotInterval;
-    private float reroadInterval;
+    private float reloadInterval;
     private AudioSource gunAudioSource;
 
 
@@ -30,7 +30,7 @@ public class ShotController : MonoBehaviour
         shotEffect = Resources.Load<GameObject>("Effects/ShotEffect");
         shotReachEffect = Resources.Load<GameObject>("Effects/ShotReachEffect");
         shotInterval = 0;
-        reroadInterval = 1;
+        reloadInterval = 1;
         gunAudioSource = gameObject.GetComponent<AudioSource>();
 
     }
@@ -39,65 +39,87 @@ public class ShotController : MonoBehaviour
     void Update()
     {
         shotInterval += Time.deltaTime;
-        reroadInterval += Time.deltaTime;
+        reloadInterval += Time.deltaTime;
 
-        if (Input.GetMouseButtonDown(0) && shotInterval >= 0.5f && 
-		reroadInterval >= 2f && _bullet > 0)
+
+
+
+        if (Input.GetMouseButtonDown(0))
         {
             ShotGun();
         }
 
-        if (Input.GetKeyDown(KeyCode.R) && _bullet < 30 && _bulletBox > 0
-        && reroadInterval >= 2f && shotInterval >= 0.5f)
+        if (Input.GetKeyDown(KeyCode.R))
         {
-            ReroadBullet();
-
+            ReloadBullet();
         }
+
+
+
+
 
 
     }
     private void ShotGun()
     {
 
-        _bullet -= 1;
 
-        print(_bullet);
 
-        gunAudioSource.PlayOneShot(shotSound);
-        shotRay = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
-        if (Physics.Raycast(shotRay, out gunShotHit))
+
+
+        if (shotInterval >= 0.5f && reloadInterval >= 2f && _bullet > 0)
         {
-            hitObjPosition = gunShotHit.point;
 
-            Instantiate(shotEffect, this.transform.position, Quaternion.identity);
-            Instantiate(shotReachEffect, hitObjPosition, Quaternion.identity);
+
+            _bullet -= 1;
+
+            gunAudioSource.PlayOneShot(shotSound);
+            shotRay = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
+            if (Physics.Raycast(shotRay, out gunShotHit))
+            {
+                hitObjPosition = gunShotHit.point;
+
+                Instantiate(shotEffect, this.transform.position, Quaternion.identity);
+                Instantiate(shotReachEffect, hitObjPosition, Quaternion.identity);
+
+            }
+
+            shotInterval = 0;
+            print(_bullet);
+
 
         }
 
-        shotInterval = 0;
+
 
     }
-    private void ReroadBullet()
+    private void ReloadBullet()
     {
-
-        gunAudioSource.PlayOneShot(reroadSound);
-        for (int i = 1; _bullet < 30; ++i)
+        if (_bullet < 30 && _bulletBox > 0)
         {
-            if (_bulletBox > 0)
+
+            gunAudioSource.PlayOneShot(reroadSound);
+            for (int i = 1; _bullet < 30; ++i)
             {
-                _bullet += 1;
-                _bulletBox -= 1;
-                print(_bullet);
-                print(_bulletBox);
+                if (_bulletBox > 0)
+                {
+                    _bullet += 1;
+                    _bulletBox -= 1;
+                    print(_bullet);
+                    print(_bulletBox);
+
+                }
+                else
+                {
+                    break;
+                }
 
             }
-            else
-            {
-                break;
-            }
+            reloadInterval = 0;
+
 
         }
-        reroadInterval = 0;
+
 
     }
 
