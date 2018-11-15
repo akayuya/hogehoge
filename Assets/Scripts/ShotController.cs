@@ -46,10 +46,11 @@ public class ShotController : MonoBehaviour
         shotInterval += Time.deltaTime;
         reloadInterval += Time.deltaTime;
 
-        if (shotInterval >= 0.5f && reloadInterval >= 2f)
-        {
-            _interval = true;
-        }
+
+
+        IntervalShotReload();
+
+
 
 
 
@@ -82,10 +83,10 @@ public class ShotController : MonoBehaviour
 
         if (_interval != _emptyBullet)
         {
-			if(!_interval)
-			{
-				return;
-			}
+            if (!_interval)
+            {
+                return;
+            }
 
 
             _bullet -= 1;
@@ -122,12 +123,13 @@ public class ShotController : MonoBehaviour
     {
         if (_isFulledBullet != _interval)
         {
-			if(_isFulledBullet){
-				return;
-			}
+            if (_isFulledBullet)
+            {
+                return;
+            }
 
             gunAudioSource.PlayOneShot(reroadSound);
-            for (int i = 1; _bullet<30; ++i)
+            for (int i = 1; _bullet < 30; ++i)
             {
                 if (_bulletBox > 0)
                 {
@@ -144,14 +146,23 @@ public class ShotController : MonoBehaviour
 
             _interval = false;
             _isFulledBullet = true;
-			
-			if(_emptyBullet){
-				_emptyBullet = false;
-			}
+
+            if (_emptyBullet)
+            {
+                _emptyBullet = false;
+            }
 
 
         }
 
+
+    }
+    private void IntervalShotReload()
+    {
+        if (shotInterval >= 0.5f && reloadInterval >= 2f)
+        {
+            _interval = true;
+        }
 
     }
 
