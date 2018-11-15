@@ -122,6 +122,9 @@ public class ShotController : MonoBehaviour
     {
         if (_isFulledBullet != _interval)
         {
+			if(_isFulledBullet){
+				return;
+			}
 
             gunAudioSource.PlayOneShot(reroadSound);
             for (int i = 1; _bullet<30; ++i)
