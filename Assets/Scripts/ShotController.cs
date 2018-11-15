@@ -17,6 +17,9 @@ public class ShotController : MonoBehaviour
     private Vector3 hitObjPosition;
     private float shotInterval;
     private float reloadInterval;
+    private bool _interval;
+    private bool _isFulledBullet;
+    private bool _emptyBullet;
     private AudioSource gunAudioSource;
 
 
@@ -30,8 +33,10 @@ public class ShotController : MonoBehaviour
         shotEffect = Resources.Load<GameObject>("Effects/ShotEffect");
         shotReachEffect = Resources.Load<GameObject>("Effects/ShotReachEffect");
         shotInterval = 0;
-        reloadInterval = 1;
+        reloadInterval = 0;
         gunAudioSource = gameObject.GetComponent<AudioSource>();
+        _isFulledBullet = true;
+        _interval = true;
 
     }
 
@@ -41,6 +46,13 @@ public class ShotController : MonoBehaviour
         shotInterval += Time.deltaTime;
         reloadInterval += Time.deltaTime;
 
+        if (shotInterval >= 0.5f && reloadInterval >= 2f)
+        {
+            _interval = true;
+        }
+
+
+
 
 
 
@@ -48,6 +60,7 @@ public class ShotController : MonoBehaviour
         {
             ShotGun();
         }
+
 
         if (Input.GetKeyDown(KeyCode.R))
         {
@@ -67,7 +80,7 @@ public class ShotController : MonoBehaviour
 
 
 
-        if (shotInterval >= 0.5f && reloadInterval >= 2f && _bullet > 0)
+        if (_interval == _emptyBullet)
         {
 
 
@@ -87,6 +100,14 @@ public class ShotController : MonoBehaviour
             shotInterval = 0;
             print(_bullet);
 
+            _interval = false;
+            _isFulledBullet = false;
+
+            if (_bullet == 0)
+            {
+                _emptyBullet = true;
+            }
+
 
         }
 
@@ -95,11 +116,11 @@ public class ShotController : MonoBehaviour
     }
     private void ReloadBullet()
     {
-        if (_bullet < 30 && _bulletBox > 0)
+        if (_isFulledBullet != _interval)
         {
 
             gunAudioSource.PlayOneShot(reroadSound);
-            for (int i = 1; _bullet < 30; ++i)
+            for (int i = 1; _isFulledBullet; ++i)
             {
                 if (_bulletBox > 0)
                 {
@@ -116,6 +137,10 @@ public class ShotController : MonoBehaviour
 
             }
             reloadInterval = 0;
+
+
+            _interval = false;
+            _isFulledBullet = true;
 
 
         }
