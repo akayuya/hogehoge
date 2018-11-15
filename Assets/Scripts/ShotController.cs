@@ -80,8 +80,12 @@ public class ShotController : MonoBehaviour
 
 
 
-        if (_interval == _emptyBullet)
+        if (_interval != _emptyBullet)
         {
+			if(!_interval)
+			{
+				return;
+			}
 
 
             _bullet -= 1;
@@ -120,7 +124,7 @@ public class ShotController : MonoBehaviour
         {
 
             gunAudioSource.PlayOneShot(reroadSound);
-            for (int i = 1; _isFulledBullet; ++i)
+            for (int i = 1; _bullet<30; ++i)
             {
                 if (_bulletBox > 0)
                 {
@@ -130,10 +134,6 @@ public class ShotController : MonoBehaviour
                     print(_bulletBox);
 
                 }
-                else
-                {
-                    break;
-                }
 
             }
             reloadInterval = 0;
@@ -141,6 +141,10 @@ public class ShotController : MonoBehaviour
 
             _interval = false;
             _isFulledBullet = true;
+			
+			if(_emptyBullet){
+				_emptyBullet = false;
+			}
 
 
         }
