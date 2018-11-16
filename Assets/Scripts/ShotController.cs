@@ -32,7 +32,7 @@ public class ShotController : MonoBehaviour
         shotInterval = 0;
         reloadInterval = 1;
         gunAudioSource = gameObject.GetComponent<AudioSource>();
-		
+
     }
 
     // Update is called once per frame
@@ -40,9 +40,6 @@ public class ShotController : MonoBehaviour
     {
         shotInterval += Time.deltaTime;
         reloadInterval += Time.deltaTime;
-
-
-
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -54,108 +51,75 @@ public class ShotController : MonoBehaviour
             ReloadBullet();
         }
 
-
-
-
-
-
     }
     private void ShotGun()
     {
 
+        if (shotInterval < 0.5f)
+        {
+            return;
+        }
 
-
-
+        if (reloadInterval < 2f)
+        {
+            return;
+        }
 
         if (_bullet > 0)
         {
+            _bullet -= 1;
+            shotInterval = 0;
+            print(_bullet);
 
-
-            if (shotInterval >= 0.5f)
+            gunAudioSource.PlayOneShot(shotSound);
+            shotRay = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
+            if (Physics.Raycast(shotRay, out gunShotHit))
             {
+                hitObjPosition = gunShotHit.point;
 
-
-
-                if (reloadInterval >= 2f)
-                {
-
-                    _bullet -= 1;
-					shotInterval = 0;
-					print(_bullet);
-
-                    gunAudioSource.PlayOneShot(shotSound);
-                    shotRay = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
-                    if (Physics.Raycast(shotRay, out gunShotHit))
-                    {
-                        hitObjPosition = gunShotHit.point;
-
-                        Instantiate(shotEffect, this.transform.position, Quaternion.identity);
-                        Instantiate(shotReachEffect, hitObjPosition, Quaternion.identity);
-
-
-                 
-
-                    }
-                }
-
+                Instantiate(shotEffect, this.transform.position, Quaternion.identity);
+                Instantiate(shotReachEffect, hitObjPosition, Quaternion.identity);
             }
 
-            return;
-
         }
-
-
 
     }
     private void ReloadBullet()
     {
+
+        if (_bulletBox == 0)
+        {
+            return;
+        }
+        if (shotInterval < 0.5f)
+        {
+            return;
+        }
+        if (reloadInterval < 2f)
+        {
+            return;
+        }
+
         if (_bullet < 30)
         {
-            if (_bulletBox > 0)
+            reloadInterval = 0;
+            gunAudioSource.PlayOneShot(reroadSound);
+            for (int i = 1; _bullet < 30; ++i)
             {
-                if (shotInterval >= 0.5f)
+                if (_bulletBox > 0)
                 {
-                    if (reloadInterval >= 2f)
-                    {
-
-
-
-                        gunAudioSource.PlayOneShot(reroadSound);
-                        for (int i = 1; _bullet < 30; ++i)
-                        {
-                            if (_bulletBox > 0)
-                            {
-                                _bullet += 1;
-                                _bulletBox -= 1;
-                                print(_bullet);
-                                print(_bulletBox);
-
-
-                            }
-
-
-
-
-
-                        }
-
-                    }
-
-
-
-
+                    _bullet += 1;
+                    _bulletBox -= 1;
+                    print(_bullet);
+                    print(_bulletBox);
                 }
-                reloadInterval = 0;
 
             }
 
-
-
-
-
         }
 
-        return;
+
+
 
 
     }
