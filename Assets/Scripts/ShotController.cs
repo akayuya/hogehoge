@@ -6,7 +6,7 @@ public class ShotController : MonoBehaviour
 {
 
     [SerializeField] private AudioClip shotSound;
-    [SerializeField] private AudioClip reroadSound;
+    [SerializeField] private AudioClip reloadSound;
     [SerializeField] private int _bulletBox;
     [SerializeField] private int _bullet;
 
@@ -30,13 +30,12 @@ public class ShotController : MonoBehaviour
 
 
 
+
     // Use this for initialization
     void Start()
     {
         shotEffect = Resources.Load<GameObject>("Effects/ShotEffect");
         shotReachEffect = Resources.Load<GameObject>("Effects/ShotReachEffect");
-        shotInterval = 0;
-        reloadInterval = 1;
         gunAudioSource = gameObject.GetComponent<AudioSource>();
 
     }
@@ -71,25 +70,27 @@ public class ShotController : MonoBehaviour
             return;
         }
 
-        if (_bullet > 0)
+        if (_bullet <= 0)
         {
-            _bullet -= 1;
-            shotInterval = 0;
-            print(_bullet);
+			return;
+		}
+         _bullet -= 1;
+        shotInterval = 0;
+        print(_bullet);
 
-            gunAudioSource.PlayOneShot(shotSound);
-            shotRay = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
-            if (Physics.Raycast(shotRay, out gunShotHit))
-            {
-                hitObjPosition = gunShotHit.point;
+        gunAudioSource.PlayOneShot(shotSound);
+        shotRay = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
+        if (Physics.Raycast(shotRay, out gunShotHit))
+        {
+            hitObjPosition = gunShotHit.point;
 
-                Instantiate(shotEffect, this.transform.position, Quaternion.identity);
-                Instantiate(shotReachEffect, hitObjPosition, Quaternion.identity);
-            }
-
+            Instantiate(shotEffect, this.transform.position, Quaternion.identity);
+            Instantiate(shotReachEffect, hitObjPosition, Quaternion.identity);
         }
 
     }
+
+    
     private void ReloadBullet()
     {
 
@@ -106,24 +107,26 @@ public class ShotController : MonoBehaviour
             return;
         }
 
-        if (_bullet < BULLET_STOCK_FULL)
+        if (_bullet >= BULLET_STOCK_FULL)
         {
-            reloadInterval = 0;
-            gunAudioSource.PlayOneShot(reroadSound);
-            for (int i = 1; _bullet < BULLET_STOCK_FULL; ++i)
+			return;
+		}
+        reloadInterval = 0;
+        gunAudioSource.PlayOneShot(reloadSound);
+        for (int i = 1; _bullet < BULLET_STOCK_FULL; ++i)
+        {
+            if (_bulletBox > 0)
             {
-                if (_bulletBox > 0)
-                {
-                    _bullet += 1;
-                    _bulletBox -= 1;
-                    print(_bullet);
-                    print(_bulletBox);
-                }
-
+                _bullet += 1;
+                _bulletBox -= 1;
+                print(_bullet);
+                print(_bulletBox);
+                
+			}
             }
 
         }
 
-    }
+    
 
 }
