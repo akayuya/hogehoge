@@ -19,6 +19,12 @@ public class ShotController : MonoBehaviour
     private float reloadInterval;
     private AudioSource gunAudioSource;
 
+	private const int RELOAD_BORDER_TIME = 2;
+
+	private const float SHOT_BORDER_TIME = 0.5f;
+
+	private const int BULLET_STOCK_FULL = 30;
+
 
 
 
@@ -55,12 +61,12 @@ public class ShotController : MonoBehaviour
     private void ShotGun()
     {
 
-        if (shotInterval < 0.5f)
+        if (shotInterval < SHOT_BORDER_TIME)
         {
             return;
         }
 
-        if (reloadInterval < 2f)
+        if (reloadInterval < RELOAD_BORDER_TIME)
         {
             return;
         }
@@ -91,20 +97,20 @@ public class ShotController : MonoBehaviour
         {
             return;
         }
-        if (shotInterval < 0.5f)
+        if (shotInterval < SHOT_BORDER_TIME)
         {
             return;
         }
-        if (reloadInterval < 2f)
+        if (reloadInterval < RELOAD_BORDER_TIME)
         {
             return;
         }
 
-        if (_bullet < 30)
+        if (_bullet < BULLET_STOCK_FULL)
         {
             reloadInterval = 0;
             gunAudioSource.PlayOneShot(reroadSound);
-            for (int i = 1; _bullet < 30; ++i)
+            for (int i = 1; _bullet < BULLET_STOCK_FULL; ++i)
             {
                 if (_bulletBox > 0)
                 {
@@ -117,10 +123,6 @@ public class ShotController : MonoBehaviour
             }
 
         }
-
-
-
-
 
     }
 
