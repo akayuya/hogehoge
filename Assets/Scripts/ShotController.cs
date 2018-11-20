@@ -17,6 +17,8 @@ public class ShotController : MonoBehaviour
     private Vector3 hitObjPosition;
     private float shotInterval;
     private float reloadInterval;
+
+    private float hitObjPosY;
     private AudioSource gunAudioSource;
 
     private const int RELOAD_BORDER_TIME = 2;
@@ -25,9 +27,11 @@ public class ShotController : MonoBehaviour
 
     private const int BULLET_STOCK_FULL = 30;
 
+    private const int HIT_HEADMARKER_SCORE = 50;
 
+    private const int HIT_TARGET_SCORE = 3;
 
-
+    private TargetController targetController = new TargetController();
 
 
 
@@ -37,7 +41,6 @@ public class ShotController : MonoBehaviour
         shotEffect = Resources.Load<GameObject>("Effects/ShotEffect");
         shotReachEffect = Resources.Load<GameObject>("Effects/ShotReachEffect");
         gunAudioSource = gameObject.GetComponent<AudioSource>();
-
     }
 
     // Update is called once per frame
@@ -84,8 +87,17 @@ public class ShotController : MonoBehaviour
         {
             hitObjPosition = gunShotHit.point;
 
+            hitObjPosY = hitObjPosition.y;
+
+            Debug.DrawLine(shotRay.origin, hitObjPosition, Color.black);
+
             Instantiate(shotEffect, this.transform.position, Quaternion.identity);
             Instantiate(shotReachEffect, hitObjPosition, Quaternion.identity);
+
+
+            HitTargetScoreHp();
+
+
         }
 
     }
@@ -127,6 +139,28 @@ public class ShotController : MonoBehaviour
 
     }
 
+    private void HitTargetScoreHp()
+    {
 
+        if (gunShotHit.collider.gameObject.tag == "HeadMarker")
+        {
+            targetController._targetHP--;
+            targetController._targetScore += HIT_HEADMARKER_SCORE;
+            print(targetController._targetHP);
+            print(targetController._targetScore);
+
+        }
+
+        if (gunShotHit.collider.gameObject.tag == "Target")
+        {
+            targetController._targetHP--;
+            targetController._targetScore += hitObjPosY * HIT_TARGET_SCORE;
+            print(targetController._targetHP);
+            print(targetController._targetScore);
+
+        }
+
+
+    }
 
 }
