@@ -122,10 +122,8 @@ public class ShotController : MonoBehaviour
             }
         }
     }
-
     private void HitTargetScoreHp()
     {
-
         if (gunShotHit.collider.gameObject.tag == "HeadMarker")
         {
             TargetController._targetHP--;
@@ -142,3 +140,4 @@ public class ShotController : MonoBehaviour
         }
     }
 }
+

@@ -46,14 +46,15 @@ public class TargetController : MonoBehaviour
         if (_isReviveTarget)
         {
             _targetHP = TARGET_HP_FULL;
+            // print("b");
             yield return new WaitForSeconds(REVIVE_MOTION_INTERVAL);
             targetMotion.SetBool("IsReviveTarget", _isReviveTarget);
             yield return new WaitForSeconds(DEFAULT_MOTION_INTERVAL);
             _isDefaultTarget = true;
             targetMotion.SetBool("IsDefaultTarget", _isDefaultTarget);
-
+            // targetMotion.SetBool("IsCrushTarget", _isCrushTarget);
+            // targetMotion.SetBool("IsReviveTarget", _isReviveTarget);
             yield break;
-
         }
     }
     private void StopTargetMotion()
@@ -64,6 +65,5 @@ public class TargetController : MonoBehaviour
         targetMotion.SetBool("IsReviveTarget", _isReviveTarget);
         _isDefaultTarget = false;
         targetMotion.SetBool("IsDefaultTarget", _isDefaultTarget);
-        
     }
 }
