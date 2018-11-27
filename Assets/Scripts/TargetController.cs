@@ -8,7 +8,7 @@ public class TargetController : MonoBehaviour
     private Animator targetMotion;
     private const int TARGET_HP_EMPTY = 0;
     private const int TARGET_HP_FULL = 5;
-    private const int REVIVE_MOTION_INTERVAL = 3;
+    private const int REVIVE_MOTION_INTERVAL = 10;
     private const int DEFAULT_MOTION_INTERVAL = 1;
     private bool _isCrushTarget;
     private bool _isReviveTarget;
