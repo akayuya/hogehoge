@@ -52,11 +52,8 @@ public class TargetController : MonoBehaviour
             yield return new WaitForSeconds(DEFAULT_MOTION_INTERVAL);
             _isDefaultTarget = true;
             targetMotion.SetBool("IsDefaultTarget", _isDefaultTarget);
-<<<<<<< HEAD
             // targetMotion.SetBool("IsCrushTarget", _isCrushTarget);
             // targetMotion.SetBool("IsReviveTarget", _isReviveTarget);
-=======
->>>>>>> parent of 8587ac2... miss
             yield break;
 
         }
