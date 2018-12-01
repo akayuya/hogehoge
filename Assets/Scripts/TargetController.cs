@@ -8,7 +8,11 @@ public class TargetController : MonoBehaviour
     private Animator targetMotion;
     private const int TARGET_HP_EMPTY = 0;
     private const int TARGET_HP_FULL = 5;
+
     private const int REVIVE_MOTION_INTERVAL = 2;
+
+    private const int REVIVE_MOTION_INTERVAL = 3;
+
     private const int DEFAULT_MOTION_INTERVAL = 1;
     private bool _isCrushTarget;
     private bool _isReviveTarget;
@@ -34,6 +38,7 @@ public class TargetController : MonoBehaviour
             StopTargetMotion();
         }
     }
+    
     private void TargetCrashMotion(ref bool _isCrushTarget, ref bool _isReviveTarget)
     {
         _isCrushTarget = true;
@@ -54,6 +59,7 @@ public class TargetController : MonoBehaviour
             // targetMotion.SetBool("IsCrushTarget", _isCrushTarget);
             // targetMotion.SetBool("IsReviveTarget", _isReviveTarget);
             yield break;
+
         }
     }
     private void StopTargetMotion()
@@ -65,4 +71,5 @@ public class TargetController : MonoBehaviour
         _isDefaultTarget = false;
         targetMotion.SetBool("IsDefaultTarget", _isDefaultTarget);
     }
+  }
 }
