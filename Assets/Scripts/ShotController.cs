@@ -17,19 +17,21 @@ public class ShotController : MonoBehaviour
     private Vector3 hitObjPosition;
     private float shotInterval;
     private float reloadInterval;
-
     private float hitObjPosY;
     private AudioSource gunAudioSource;
 
     private const int RELOAD_BORDER_TIME = 2;
 
     private const float SHOT_BORDER_TIME = 0.5f;
-
     private const int BULLET_STOCK_FULL = 30;
-
-    private const int HIT_HEADMARKER_SCORE = 50;
-
+    private const int HIT_HEADMARKER_SCORE_CENTER = 50;
     private const int HIT_TARGET_SCORE = 3;
+    private const int SCORE_MAGNIFICATION = 50;
+    private Vector2 CenterCoordinate;
+    private float distanceFromCenterCoordinate;
+
+
+
 
     // Use this for initialization
     void Start()
@@ -81,9 +83,14 @@ public class ShotController : MonoBehaviour
         shotRay = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
         if (Physics.Raycast(shotRay, out gunShotHit))
         {
-            hitObjPosition = gunShotHit.point; 
+            hitObjPosition = gunShotHit.point;
 
             hitObjPosY = hitObjPosition.y;
+
+            if (gunShotHit.collider.tag == "HeadMarker")
+            {
+
+            }
 
             Instantiate(shotEffect, this.transform.position, Quaternion.identity);
             Instantiate(shotReachEffect, hitObjPosition, Quaternion.identity);
@@ -122,23 +129,26 @@ public class ShotController : MonoBehaviour
             }
         }
     }
-
     private void HitTargetScoreHp()
     {
 
         if (gunShotHit.collider.gameObject.tag == "HeadMarker")
         {
+            CenterCoordinate = gunShotHit.collider.GetComponent<BoxCollider>().bounds.center;
+            distanceFromCenterCoordinate = (Vector2.Distance(CenterCoordinate, hitObjPosition));
+            TargetController._targetScore += (HIT_HEADMARKER_SCORE_CENTER - distanceFromCenterCoordinate * SCORE_MAGNIFICATION);
+
             TargetController._targetHP--;
-            TargetController._targetScore += HIT_HEADMARKER_SCORE;
+            // TargetController._targetScore += HIT_HEADMARKER_SCORE;
             print(TargetController._targetHP);
             print(TargetController._targetScore);
         }
-        if (gunShotHit.collider.gameObject.tag == "Target")
-        {
-            TargetController._targetHP--;
-            TargetController._targetScore += hitObjPosY * HIT_TARGET_SCORE;
-            print(TargetController._targetHP);
-            print(TargetController._targetScore);
-        }
+        // if (gunShotHit.collider.gameObject.tag == "Target")
+        // {
+        //     TargetController._targetHP--;
+        //     TargetController._targetScore += hitObjPosY * HIT_TARGET_SCORE;
+        //     print(TargetController._targetHP);
+        //     print(TargetController._targetScore);
+        // }
     }
 }
