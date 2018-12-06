@@ -136,7 +136,7 @@ public class ShotController : MonoBehaviour
         {
             CenterCoordinate = gunShotHit.collider.GetComponent<BoxCollider>().bounds.center;
             distanceFromCenterCoordinate = (Vector2.Distance(CenterCoordinate, hitObjPosition));
-            TargetController._targetScore += (HIT_HEADMARKER_SCORE_CENTER - distanceFromCenterCoordinate * SCORE_MAGNIFICATION);
+            TargetController._targetScore += (HIT_HEADMARKER_SCORE_CENTER - (distanceFromCenterCoordinate * SCORE_MAGNIFICATION));
 
             TargetController._targetHP--;
             // TargetController._targetScore += HIT_HEADMARKER_SCORE;
