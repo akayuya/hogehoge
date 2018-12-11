@@ -9,10 +9,6 @@ public class ShotController : MonoBehaviour
     [SerializeField] private int _bullet;
     [System.NonSerialized] public Vector3 hitObjPosition;
 
-    GameObject hpControl;
-
-    HPController hpController;
-
     GameObject scoreControl;
 
     ScoreController scoreController;
@@ -42,8 +38,6 @@ public class ShotController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        hpControl = GameObject.Find("HPControl");
-        hpController = hpControl.GetComponent<HPController>();
 
         scoreControl = GameObject.Find("ScoreControl");
         scoreController = scoreControl.GetComponent<ScoreController>();
@@ -71,7 +65,6 @@ public class ShotController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             ReloadBullet();
-
         }
 
     }
@@ -106,7 +99,7 @@ public class ShotController : MonoBehaviour
             Instantiate(shotReachEffect, hitObjPosition, Quaternion.identity);
 
         }
-        hpController.TargetHitHP();
+        targetController.TargetHitHP();
         scoreController.HitTargetScoreHp();
     }
     private void ReloadBullet()

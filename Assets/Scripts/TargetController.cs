@@ -5,21 +5,28 @@ public class TargetController : MonoBehaviour
 {
     private Animator targetMotion;
     private const int TARGET_HP_EMPTY = 0;
-    private const int REVIVE_MOTION_INTERVAL = 3;
-    private const float DEFAULT_MOTION_INTERVAL = 1;
+    private const int START_REVIVE_MOTION_INTERVAL = 3;
+    private const int DEFAULT_MOTION_TRUE_INTERVAL = 1;
 
+    private const float END_REVIVE_MOTION_INTERVAL = 0.5f;
+
+    public const int TARGET_HP_FULL = 5;
+
+    public int _targetHP = 5;
     private bool _isCrushTarget;
     private bool _isReviveTarget;
     private bool _isDefaultTarget;
-    GameObject hpControl;
+    GameObject shotControl;
 
-    HPController hpController;
+    ShotController shotController;
 
     // Use this for initialization
     void Start()
     {
-        hpControl = GameObject.Find("HPControl");
-        hpController = hpControl.GetComponent<HPController>();
+        shotControl = GameObject.Find("ShotControl");
+
+        shotController = shotControl.GetComponent<ShotController>();
+
         targetMotion = GetComponent<Animator>();
     }
 
@@ -29,7 +36,7 @@ public class TargetController : MonoBehaviour
     }
     public void TargetCrashMotion()
     {
-        if (hpController._targetHP != TARGET_HP_EMPTY)
+        if (_targetHP != TARGET_HP_EMPTY)
         {
             return;
         }
@@ -46,14 +53,14 @@ public class TargetController : MonoBehaviour
         if (_isReviveTarget)
         {
 
-            yield return new WaitForSeconds(REVIVE_MOTION_INTERVAL);
+            yield return new WaitForSeconds(START_REVIVE_MOTION_INTERVAL);
             targetMotion.SetBool("IsReviveTarget", _isReviveTarget);
             // IsReviveTargetのアニメが終わるまでのインターバル設定。
-            yield return new WaitForSeconds(REVIVE_MOTION_INTERVAL);
-
-            hpController.TargetHPFull();
+            yield return new WaitForSeconds(END_REVIVE_MOTION_INTERVAL);
 
             StartCoroutine(StopTargetMotion());
+
+            TargetHPFull();
 
             yield break;
         }
@@ -66,12 +73,39 @@ public class TargetController : MonoBehaviour
         _isDefaultTarget = true;
         targetMotion.SetBool("IsDefaultTarget", _isDefaultTarget);
 
-        yield return new WaitForSeconds(DEFAULT_MOTION_INTERVAL);
 
         _isReviveTarget = false;
         targetMotion.SetBool("IsReviveTarget", _isReviveTarget);
+        
+        // IsDeafaultTargetの判定が出てからfalseにするためインターバルを設定。
+        yield return new WaitForSeconds(DEFAULT_MOTION_TRUE_INTERVAL);
         _isDefaultTarget = false;
         targetMotion.SetBool("IsDefaultTarget", _isDefaultTarget);
+    }
+    public void TargetHitHP()
+    {
+        if (shotController.gunShotHit.collider.gameObject.tag == "Target")
+        {
+            _targetHP--;
+            print(_targetHP);
+        }
+        else if (shotController.gunShotHit.collider.gameObject.tag == "HeadMarker")
+        {
+            _targetHP--;
+            print(_targetHP);
+        }
+
+    }
+    public void TargetHPFull()
+    {
+
+        if (_targetHP != TARGET_HP_EMPTY)
+        {
+            return;
+        }
+
+        _targetHP = TARGET_HP_FULL;
+        print(_targetHP);
 
     }
 }
