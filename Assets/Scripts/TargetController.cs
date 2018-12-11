@@ -3,68 +3,75 @@ using System.Collections.Generic;
 using UnityEngine;
 public class TargetController : MonoBehaviour
 {
-    public static int _targetHP = 5;
-    public static float _targetScore;
     private Animator targetMotion;
     private const int TARGET_HP_EMPTY = 0;
-    private const int TARGET_HP_FULL = 5;
     private const int REVIVE_MOTION_INTERVAL = 3;
-    private const int DEFAULT_MOTION_INTERVAL = 1;
+    private const float DEFAULT_MOTION_INTERVAL = 1;
+
     private bool _isCrushTarget;
     private bool _isReviveTarget;
     private bool _isDefaultTarget;
+    GameObject hpControl;
+
+    HPController hpController;
 
     // Use this for initialization
     void Start()
     {
+        hpControl = GameObject.Find("HPControl");
+        hpController = hpControl.GetComponent<HPController>();
         targetMotion = GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (_targetHP == TARGET_HP_EMPTY)
-        {
-            TargetCrashMotion(ref _isCrushTarget, ref _isReviveTarget);
-            StartCoroutine(TargetReviveMotion(_isReviveTarget));
-            print(_targetHP);
-        }
-        else
-        {
-            StopTargetMotion();
-        }
     }
-
-    private void TargetCrashMotion(ref bool _isCrushTarget, ref bool _isReviveTarget)
+    public void TargetCrashMotion()
     {
+        if (hpController._targetHP != TARGET_HP_EMPTY)
+        {
+            return;
+        }
         _isCrushTarget = true;
         _isReviveTarget = true;
         targetMotion.SetBool("IsCrushTarget", _isCrushTarget);
+
+        StartCoroutine(TargetReviveMotion());
+
+
     }
-    private IEnumerator TargetReviveMotion(bool _isReviveTarget)
+    public IEnumerator TargetReviveMotion()
     {
         if (_isReviveTarget)
         {
-            _targetHP = TARGET_HP_FULL;
-            // print("b");
+
             yield return new WaitForSeconds(REVIVE_MOTION_INTERVAL);
             targetMotion.SetBool("IsReviveTarget", _isReviveTarget);
-            yield return new WaitForSeconds(DEFAULT_MOTION_INTERVAL);
-            _isDefaultTarget = true;
-            targetMotion.SetBool("IsDefaultTarget", _isDefaultTarget);
-            targetMotion.SetBool("IsCrushTarget", _isCrushTarget);
-            targetMotion.SetBool("IsReviveTarget", _isReviveTarget);
-            yield break;
+            // IsReviveTargetのアニメが終わるまでのインターバル設定。
+            yield return new WaitForSeconds(REVIVE_MOTION_INTERVAL);
 
+            hpController.TargetHPFull();
+
+            StartCoroutine(StopTargetMotion());
+
+            yield break;
         }
     }
-    private void StopTargetMotion()
+    public IEnumerator StopTargetMotion()
     {
+        // StopTargetMotionの処理前に繰り返されないように_isCrushTargetをfalseに。
         _isCrushTarget = false;
         targetMotion.SetBool("IsCrushTarget", _isCrushTarget);
+        _isDefaultTarget = true;
+        targetMotion.SetBool("IsDefaultTarget", _isDefaultTarget);
+
+        yield return new WaitForSeconds(DEFAULT_MOTION_INTERVAL);
+
         _isReviveTarget = false;
         targetMotion.SetBool("IsReviveTarget", _isReviveTarget);
         _isDefaultTarget = false;
         targetMotion.SetBool("IsDefaultTarget", _isDefaultTarget);
+
     }
 }

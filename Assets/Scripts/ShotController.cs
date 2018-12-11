@@ -1,45 +1,59 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class ShotController : MonoBehaviour
 {
-
     [SerializeField] private AudioClip shotSound;
     [SerializeField] private AudioClip reloadSound;
     [SerializeField] private int _bulletBox;
     [SerializeField] private int _bullet;
+    [System.NonSerialized] public Vector3 hitObjPosition;
 
-    private Ray shotRay;
-    private RaycastHit gunShotHit;
+    GameObject hpControl;
+
+    HPController hpController;
+
+    GameObject scoreControl;
+
+    ScoreController scoreController;
+
+    GameObject targetControl;
+
+    TargetController targetController;
+
+
+    public Ray shotRay;
+    public RaycastHit gunShotHit;
     private GameObject shotEffect;
     private GameObject shotReachEffect;
-    private Vector3 hitObjPosition;
+
     private float shotInterval;
     private float reloadInterval;
-    private float hitObjPosY;
     private AudioSource gunAudioSource;
-
     private const int RELOAD_BORDER_TIME = 2;
-
     private const float SHOT_BORDER_TIME = 0.5f;
     private const int BULLET_STOCK_FULL = 30;
-    private const int HIT_HEADMARKER_SCORE_CENTER = 50;
+    // private const int HIT_HEADMARKER_SCORE_CENTER = 50;
     private const int HIT_TARGET_SCORE = 3;
-    private const int SCORE_MAGNIFICATION = 50;
-    private Vector2 CenterCoordinate;
-    private float distanceFromCenterCoordinate;
-
-
-
+    // private const int SCORE_MAGNIFICATION = 50;
+    // private Vector2 CenterCoordinate;
+    // private float distanceFromCenterCoordinate;
 
     // Use this for initialization
     void Start()
     {
+        hpControl = GameObject.Find("HPControl");
+        hpController = hpControl.GetComponent<HPController>();
+
+        scoreControl = GameObject.Find("ScoreControl");
+        scoreController = scoreControl.GetComponent<ScoreController>();
+
+        targetControl = GameObject.FindWithTag("Target");
+        targetController = targetControl.GetComponent<TargetController>();
+
         shotEffect = Resources.Load<GameObject>("Effects/ShotEffect");
         shotReachEffect = Resources.Load<GameObject>("Effects/ShotReachEffect");
         gunAudioSource = gameObject.GetComponent<AudioSource>();
-        print(TargetController._targetHP);
     }
 
     // Update is called once per frame
@@ -52,11 +66,14 @@ public class ShotController : MonoBehaviour
         {
             ShotGun();
         }
+        targetController.TargetCrashMotion();
 
         if (Input.GetKeyDown(KeyCode.R))
         {
             ReloadBullet();
+
         }
+
     }
     private void ShotGun()
     {
@@ -85,25 +102,16 @@ public class ShotController : MonoBehaviour
         {
             hitObjPosition = gunShotHit.point;
 
-            hitObjPosY = hitObjPosition.y;
-
-            if (gunShotHit.collider.tag == "HeadMarker")
-            {
-
-            }
-
             Instantiate(shotEffect, this.transform.position, Quaternion.identity);
             Instantiate(shotReachEffect, hitObjPosition, Quaternion.identity);
 
-            HitTargetScoreHp();
         }
+        hpController.TargetHitHP();
+        scoreController.HitTargetScoreHp();
     }
     private void ReloadBullet()
     {
-        if (_bulletBox == 0)
-        {
-            return;
-        }
+        if (_bulletBox == 0) return;
         if (shotInterval < SHOT_BORDER_TIME)
         {
             return;
@@ -129,26 +137,5 @@ public class ShotController : MonoBehaviour
             }
         }
     }
-    private void HitTargetScoreHp()
-    {
 
-        if (gunShotHit.collider.gameObject.tag == "HeadMarker")
-        {
-            CenterCoordinate = gunShotHit.collider.GetComponent<BoxCollider>().bounds.center;
-            distanceFromCenterCoordinate = (Vector2.Distance(CenterCoordinate, hitObjPosition));
-            TargetController._targetScore += (HIT_HEADMARKER_SCORE_CENTER - (distanceFromCenterCoordinate * SCORE_MAGNIFICATION));
-
-            TargetController._targetHP--;
-            // TargetController._targetScore += HIT_HEADMARKER_SCORE;
-            print(TargetController._targetHP);
-            print(TargetController._targetScore);
-        }
-        // if (gunShotHit.collider.gameObject.tag == "Target")
-        // {
-        //     TargetController._targetHP--;
-        //     TargetController._targetScore += hitObjPosY * HIT_TARGET_SCORE;
-        //     print(TargetController._targetHP);
-        //     print(TargetController._targetScore);
-        // }
-    }
 }
