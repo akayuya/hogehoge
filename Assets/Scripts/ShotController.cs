@@ -9,13 +9,13 @@ public class ShotController : MonoBehaviour
     [SerializeField] private int _bullet;
     [System.NonSerialized] public Vector3 hitObjPosition;
 
-    GameObject scoreControl;
+    // GameObject scoreControl;
 
-    ScoreController scoreController;
+    // ScoreController scoreController;
 
-    GameObject targetControl;
+    // GameObject targetControl;
 
-    TargetController targetController;
+    // TargetController targetController;
 
 
     public Ray shotRay;
@@ -39,15 +39,16 @@ public class ShotController : MonoBehaviour
     void Start()
     {
 
-        scoreControl = GameObject.Find("ScoreControl");
-        scoreController = scoreControl.GetComponent<ScoreController>();
+        // scoreControl = GameObject.Find("ScoreControl");
+        // scoreController = scoreControl.GetComponent<ScoreController>();
 
-        targetControl = GameObject.FindWithTag("Target");
-        targetController = targetControl.GetComponent<TargetController>();
+        // targetControl = GameObject.FindWithTag("Target");
+        // targetController = targetControl.GetComponent<TargetController>();
 
         shotEffect = Resources.Load<GameObject>("Effects/ShotEffect");
         shotReachEffect = Resources.Load<GameObject>("Effects/ShotReachEffect");
         gunAudioSource = gameObject.GetComponent<AudioSource>();
+
     }
 
     // Update is called once per frame
@@ -60,7 +61,7 @@ public class ShotController : MonoBehaviour
         {
             ShotGun();
         }
-        targetController.TargetCrashMotion();
+
 
         if (Input.GetKeyDown(KeyCode.R))
         {
@@ -70,6 +71,7 @@ public class ShotController : MonoBehaviour
     }
     private void ShotGun()
     {
+
 
         if (shotInterval < SHOT_BORDER_TIME)
         {
@@ -99,8 +101,23 @@ public class ShotController : MonoBehaviour
             Instantiate(shotReachEffect, hitObjPosition, Quaternion.identity);
 
         }
+        GameObject scoreControl;
+
+        ScoreController scoreController;
+
+        GameObject targetControl;
+
+        TargetController targetController;
+
+        scoreControl = GameObject.Find("ScoreControl");
+        scoreController = scoreControl.GetComponent<ScoreController>();
+
+        targetControl = GameObject.FindWithTag("Target");
+        targetController = targetControl.GetComponent<TargetController>();
+
         targetController.TargetHitHP();
         scoreController.HitTargetScoreHp();
+        targetController.TargetCrashMotion();
     }
     private void ReloadBullet()
     {

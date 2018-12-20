@@ -7,25 +7,22 @@ public class TargetController : MonoBehaviour
     private const int TARGET_HP_EMPTY = 0;
     private const int START_REVIVE_MOTION_INTERVAL = 3;
     private const int DEFAULT_MOTION_TRUE_INTERVAL = 1;
-
     private const float END_REVIVE_MOTION_INTERVAL = 0.5f;
-
     public const int TARGET_HP_FULL = 5;
-
     public int _targetHP = 5;
     private bool _isCrushTarget;
     private bool _isReviveTarget;
     private bool _isDefaultTarget;
-    GameObject shotControl;
+    // GameObject shotControl;
 
-    ShotController shotController;
+    // ShotController shotController;
 
     // Use this for initialization
     void Start()
     {
-        shotControl = GameObject.Find("ShotControl");
+        // shotControl = GameObject.Find("ShotControl");
 
-        shotController = shotControl.GetComponent<ShotController>();
+        // shotController = shotControl.GetComponent<ShotController>();
 
         targetMotion = GetComponent<Animator>();
     }
@@ -45,7 +42,6 @@ public class TargetController : MonoBehaviour
         targetMotion.SetBool("IsCrushTarget", _isCrushTarget);
 
         StartCoroutine(TargetReviveMotion());
-
 
     }
     public IEnumerator TargetReviveMotion()
@@ -73,10 +69,9 @@ public class TargetController : MonoBehaviour
         _isDefaultTarget = true;
         targetMotion.SetBool("IsDefaultTarget", _isDefaultTarget);
 
-
         _isReviveTarget = false;
         targetMotion.SetBool("IsReviveTarget", _isReviveTarget);
-        
+
         // IsDeafaultTargetの判定が出てからfalseにするためインターバルを設定。
         yield return new WaitForSeconds(DEFAULT_MOTION_TRUE_INTERVAL);
         _isDefaultTarget = false;
@@ -84,6 +79,13 @@ public class TargetController : MonoBehaviour
     }
     public void TargetHitHP()
     {
+        GameObject shotControl;
+
+        ShotController shotController;
+
+        shotControl = GameObject.Find("ShotControl");
+
+        shotController = shotControl.GetComponent<ShotController>();
         if (shotController.gunShotHit.collider.gameObject.tag == "Target")
         {
             _targetHP--;
@@ -94,7 +96,6 @@ public class TargetController : MonoBehaviour
             _targetHP--;
             print(_targetHP);
         }
-
     }
     public void TargetHPFull()
     {

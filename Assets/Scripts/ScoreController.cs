@@ -9,15 +9,15 @@ public class ScoreController : MonoBehaviour
     private const int SCORE_MAGNIFICATION = 50;
     private Vector2 CenterCoordinate;
     private float distanceFromCenterCoordinate;
-    ShotController shotController; 
-    GameObject shotControl;
+    // ShotController shotController; 
+    // GameObject shotControl;
 
     // Use this for initialization
     void Start()
     {
-        shotControl = GameObject.Find("ShotControl");
+        // shotControl = GameObject.Find("ShotControl");
 
-        shotController = shotControl.GetComponent<ShotController>();
+        // shotController = shotControl.GetComponent<ShotController>();
     }
 
     // Update is called once per frame
@@ -27,7 +27,13 @@ public class ScoreController : MonoBehaviour
     }
     public void HitTargetScoreHp()
     {
-        if(shotController.gunShotHit.collider.gameObject.tag == "Target"){
+        ShotController shotController;
+        GameObject shotControl;
+        shotControl = GameObject.Find("ShotControl");
+
+        shotController = shotControl.GetComponent<ShotController>();
+        if (shotController.gunShotHit.collider.gameObject.tag == "Target")
+        {
             return;
         }
         if (shotController.gunShotHit.collider.gameObject.tag == "HeadMarker")
