@@ -8,49 +8,26 @@ public class ShotController : MonoBehaviour
     [SerializeField] private int _bulletBox;
     [SerializeField] private int _bullet;
     [System.NonSerialized] public Vector3 hitObjPosition;
-
-    // GameObject scoreControl;
-
-    // ScoreController scoreController;
-
-    // GameObject targetControl;
-
-    // TargetController targetController;
-
-
     public Ray shotRay;
     public RaycastHit gunShotHit;
+    public Collider hitObjCollider;
     private GameObject shotEffect;
     private GameObject shotReachEffect;
-
     private float shotInterval;
     private float reloadInterval;
     private AudioSource gunAudioSource;
     private const int RELOAD_BORDER_TIME = 2;
     private const float SHOT_BORDER_TIME = 0.5f;
     private const int BULLET_STOCK_FULL = 30;
-    // private const int HIT_HEADMARKER_SCORE_CENTER = 50;
     private const int HIT_TARGET_SCORE = 3;
-    // private const int SCORE_MAGNIFICATION = 50;
-    // private Vector2 CenterCoordinate;
-    // private float distanceFromCenterCoordinate;
 
     // Use this for initialization
     void Start()
     {
-
-        // scoreControl = GameObject.Find("ScoreControl");
-        // scoreController = scoreControl.GetComponent<ScoreController>();
-
-        // targetControl = GameObject.FindWithTag("Target");
-        // targetController = targetControl.GetComponent<TargetController>();
-
         shotEffect = Resources.Load<GameObject>("Effects/ShotEffect");
         shotReachEffect = Resources.Load<GameObject>("Effects/ShotReachEffect");
         gunAudioSource = gameObject.GetComponent<AudioSource>();
-
     }
-
     // Update is called once per frame
     void Update()
     {
@@ -62,17 +39,13 @@ public class ShotController : MonoBehaviour
             ShotGun();
         }
 
-
         if (Input.GetKeyDown(KeyCode.R))
         {
             ReloadBullet();
         }
-
     }
     private void ShotGun()
     {
-
-
         if (shotInterval < SHOT_BORDER_TIME)
         {
             return;
@@ -89,35 +62,31 @@ public class ShotController : MonoBehaviour
         }
         _bullet -= 1;
         shotInterval = 0;
-        // print(_bullet);
 
         gunAudioSource.PlayOneShot(shotSound);
         shotRay = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
         if (Physics.Raycast(shotRay, out gunShotHit))
         {
             hitObjPosition = gunShotHit.point;
+            hitObjCollider = gunShotHit.collider;
 
             Instantiate(shotEffect, this.transform.position, Quaternion.identity);
             Instantiate(shotReachEffect, hitObjPosition, Quaternion.identity);
 
+            TargetController targetController = hitObjCollider.gameObject.GetComponent<TargetController>();
+            if (targetController == null)
+            {
+                return;
+            }
+
+            targetController.HitTarget(hitObjCollider);
+            targetController.CrushTargetMotion();
+
+            if (hitObjCollider.gameObject.tag == "HeadMarker")
+            {
+                targetController.HitHeadMarker(hitObjPosition); 
+            }
         }
-        GameObject scoreControl;
-
-        ScoreController scoreController;
-
-        GameObject targetControl;
-
-        TargetController targetController;
-
-        scoreControl = GameObject.Find("ScoreControl");
-        scoreController = scoreControl.GetComponent<ScoreController>();
-
-        targetControl = GameObject.FindWithTag("Target");
-        targetController = targetControl.GetComponent<TargetController>();
-
-        targetController.TargetHitHP();
-        scoreController.HitTargetScoreHp();
-        targetController.TargetCrashMotion();
     }
     private void ReloadBullet()
     {
@@ -142,10 +111,7 @@ public class ShotController : MonoBehaviour
             {
                 _bullet += 1;
                 _bulletBox -= 1;
-                // print(_bullet);
-                // print(_bulletBox);
             }
         }
     }
-
 }
