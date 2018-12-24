@@ -6,7 +6,7 @@ public class TargetController : MonoBehaviour
     [SerializeField] GameObject target;
     private Animator targetMotion;
     private const int TARGET_HP_EMPTY = 0;
-    private const int START_REVIVE_MOTION_INTERVAL = 3;
+    private const int START_REVIVE_MOTION_INTERVAL = 10;
     private const int DEFAULT_MOTION_TRUE_INTERVAL = 1;
     private const float END_REVIVE_MOTION_INTERVAL = 0.5f;
     public const int TARGET_HP_FULL = 5;
@@ -30,7 +30,7 @@ public class TargetController : MonoBehaviour
         {
             return;
         }
-        
+
         _isCrushTarget = true;
         _isReviveTarget = true;
         targetMotion.SetBool("IsCrushTarget", _isCrushTarget);

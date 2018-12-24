@@ -19,7 +19,6 @@ public class ShotController : MonoBehaviour
     private const int RELOAD_BORDER_TIME = 2;
     private const float SHOT_BORDER_TIME = 0.5f;
     private const int BULLET_STOCK_FULL = 30;
-    private const int HIT_TARGET_SCORE = 3;
 
     // Use this for initialization
     void Start()
