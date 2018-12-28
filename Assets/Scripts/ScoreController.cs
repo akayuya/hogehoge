@@ -7,11 +7,10 @@ public class ScoreController : MonoBehaviour
     private float _targetScore;
     private const int HIT_HEADMARKER_SCORE_CENTER = 50;
     private const int SCORE_MAGNIFICATION = 50;
-    private Vector2 CenterCoordinate;
-    private float distanceFromCenterCoordinate;
     public void CalcScore(Vector3 center, Vector3 hitPosition)
     {
         _targetScore += HIT_HEADMARKER_SCORE_CENTER - ((Vector3.Distance(center, hitPosition)) * SCORE_MAGNIFICATION);
         print(_targetScore);
     }
 }
+

@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 public class TargetController : MonoBehaviour
 {
-    [SerializeField] GameObject target;
-    private Animator targetMotion;
+    // HeadMarkerのTargetController.csが反応した時にも、
+    // Targetのアニメーションが再生されるようにTargetのAnimatorを取得。
+    [SerializeField] Animator targetMotion;
     private const int TARGET_HP_EMPTY = 0;
-    private const int START_REVIVE_MOTION_INTERVAL = 10;
+    private const int START_REVIVE_MOTION_INTERVAL = 2;
     private const int DEFAULT_MOTION_TRUE_INTERVAL = 1;
     private const float END_REVIVE_MOTION_INTERVAL = 0.5f;
     public const int TARGET_HP_FULL = 5;
@@ -18,19 +19,12 @@ public class TargetController : MonoBehaviour
     public Vector3 hitPosition;
 
     // Use this for initialization
-    void Start()
-    {
-        // HeadMarkerのTargetController.csが反応した時にも、
-        // Targetのアニメーションが再生されるようにTargetを指定。
-        targetMotion = target.GetComponent<Animator>();
-    }
     public void CrushTargetMotion()
     {
         if (_targetHP != TARGET_HP_EMPTY)
         {
             return;
         }
-
         _isCrushTarget = true;
         _isReviveTarget = true;
         targetMotion.SetBool("IsCrushTarget", _isCrushTarget);
@@ -81,11 +75,12 @@ public class TargetController : MonoBehaviour
             return;
         }
         _targetHP = TARGET_HP_FULL;
-        print(_targetHP +"HP回復");
+        print(_targetHP + "HP回復");
     }
     public void HitHeadMarker(Vector3 hitPos)
     {
         hitPosition = hitPos;
+        print(hitPosition + "hitposition");
         _hitHeadMarker = true;
     }
 }

@@ -3,28 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] GameObject ScoreControl;
-    [SerializeField] GameObject target;
-    private ScoreController scoreController;
-    private TargetController targetController;
-	private TargetController headMarkerController;
-	[SerializeField] GameObject headMarker;
-	public Vector3 headMarkerCenter;
+    [SerializeField] ScoreController scoreController;
+    [SerializeField] TargetController targetController;
+    [SerializeField] TargetController headMarker_targetController;
+    public Vector3 headMarkerCenter;
     // Use this for initialization
     void Start()
     {
-        scoreController = ScoreControl.GetComponent<ScoreController>();
-        targetController = target.GetComponent<TargetController>();
-		headMarkerController = headMarker.GetComponent<TargetController>();
-		headMarkerCenter = headMarker.GetComponent<BoxCollider>().bounds.center;
+        // HeadMarkerのColliderがTargetのColliderと分かれているためか
+        // targetController._hitHeadMarkerだとGameManagerのtargetController._hitHeadMarkerがtrueにならないため
+        // HeadMarkerにもtargetControllerを設定。
+        headMarkerCenter = headMarker_targetController.GetComponent<BoxCollider>().bounds.center;
     }
     // Update is called once per frame
     void Update()
     {
-        if (headMarkerController._hitHeadMarker)
+        if (headMarker_targetController._hitHeadMarker)
         {
-            scoreController.CalcScore(headMarkerCenter, headMarkerController.hitPosition);
-			headMarkerController._hitHeadMarker = false;
+            scoreController.CalcScore(headMarkerCenter, headMarker_targetController.hitPosition);
+            headMarker_targetController._hitHeadMarker = false;
         }
     }
 }

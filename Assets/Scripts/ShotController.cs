@@ -83,7 +83,7 @@ public class ShotController : MonoBehaviour
 
             if (hitObjCollider.gameObject.tag == "HeadMarker")
             {
-                targetController.HitHeadMarker(hitObjPosition); 
+                targetController.HitHeadMarker(hitObjPosition);
             }
         }
     }
