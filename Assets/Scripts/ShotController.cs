@@ -73,47 +73,46 @@ public class ShotController : MonoBehaviour
             Instantiate(shotReachEffect, hitObjPosition, Quaternion.identity);
 
             TargetController targetController = hitObjCollider.gameObject.GetComponent<TargetController>();
-            
+
             if (hitObjCollider.gameObject.tag == "HeadMarker")
             {
                 targetController = hitObjCollider.gameObject.transform.parent.GetComponent<TargetController>();
                 targetController.HitHeadMarker(hitObjPosition);
-                targetController.HitTarget(hitObjCollider);
-                targetController.CrushTargetMotion(); 
+                targetController.HitTarget();
+                targetController.CrushTargetMotion();
             }
-            else if (targetController == null) ;
+            else if (targetController != null)
             {
-                return;
+                targetController.HitTarget();
+                targetController.CrushTargetMotion();
             }
-            targetController.HitTarget(hitObjCollider);
-            targetController.CrushTargetMotion();
         }
     }
 
-    private void ReloadBullet()
-    {
-        if (_bulletBox == 0) return;
-        if (shotInterval < SHOT_BORDER_TIME)
+        private void ReloadBullet()
         {
-            return;
-        }
-        if (reloadInterval < RELOAD_BORDER_TIME)
-        {
-            return;
-        }
-        if (_bullet >= BULLET_STOCK_FULL)
-        {
-            return;
-        }
-        reloadInterval = 0;
-        gunAudioSource.PlayOneShot(reloadSound);
-        for (int i = 1; _bullet < BULLET_STOCK_FULL; ++i)
-        {
-            if (_bulletBox > 0)
+            if (_bulletBox == 0) return;
+            if (shotInterval < SHOT_BORDER_TIME)
             {
-                _bullet += 1;
-                _bulletBox -= 1;
+                return;
+            }
+            if (reloadInterval < RELOAD_BORDER_TIME)
+            {
+                return;
+            }
+            if (_bullet >= BULLET_STOCK_FULL)
+            {
+                return;
+            }
+            reloadInterval = 0;
+            gunAudioSource.PlayOneShot(reloadSound);
+            for (int i = 1; _bullet < BULLET_STOCK_FULL; ++i)
+            {
+                if (_bulletBox > 0)
+                {
+                    _bullet += 1;
+                    _bulletBox -= 1;
+                }
             }
         }
     }
-}

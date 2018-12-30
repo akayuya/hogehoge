@@ -63,7 +63,7 @@ public class TargetController : MonoBehaviour
         _isDefaultTarget = false;
         targetMotion.SetBool("IsDefaultTarget", _isDefaultTarget);
     }
-    public void HitTarget(Collider hitObjCollider)
+    public void HitTarget()
     {
         _targetHP--;
         print(_targetHP);
