@@ -73,20 +73,23 @@ public class ShotController : MonoBehaviour
             Instantiate(shotReachEffect, hitObjPosition, Quaternion.identity);
 
             TargetController targetController = hitObjCollider.gameObject.GetComponent<TargetController>();
-            if (targetController == null)
+            
+            if (hitObjCollider.gameObject.tag == "HeadMarker")
+            {
+                targetController = hitObjCollider.gameObject.transform.parent.GetComponent<TargetController>();
+                targetController.HitHeadMarker(hitObjPosition);
+                targetController.HitTarget(hitObjCollider);
+                targetController.CrushTargetMotion(); 
+            }
+            else if (targetController == null) ;
             {
                 return;
             }
-
             targetController.HitTarget(hitObjCollider);
             targetController.CrushTargetMotion();
-
-            if (hitObjCollider.gameObject.tag == "HeadMarker")
-            {
-                targetController.HitHeadMarker(hitObjPosition);
-            }
         }
     }
+
     private void ReloadBullet()
     {
         if (_bulletBox == 0) return;

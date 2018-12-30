@@ -80,7 +80,6 @@ public class TargetController : MonoBehaviour
     public void HitHeadMarker(Vector3 hitPos)
     {
         hitPosition = hitPos;
-        print(hitPosition + "hitposition");
         _hitHeadMarker = true;
     }
 }

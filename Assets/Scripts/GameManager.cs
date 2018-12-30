@@ -5,23 +5,34 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] ScoreController scoreController;
     [SerializeField] TargetController targetController;
-    [SerializeField] TargetController headMarker_targetController;
     public Vector3 headMarkerCenter;
+    public Vector3 parent;
+    [SerializeField] GameObject target;
+    AudioSource audio;
+
     // Use this for initialization
     void Start()
     {
         // HeadMarkerのColliderがTargetのColliderと分かれているためか
         // targetController._hitHeadMarkerだとGameManagerのtargetController._hitHeadMarkerがtrueにならないため
         // HeadMarkerにもtargetControllerを設定。
-        headMarkerCenter = headMarker_targetController.GetComponent<BoxCollider>().bounds.center;
+        headMarkerCenter = targetController.GetComponentInChildren<BoxCollider>().bounds.center;
+
+        parent = targetController.GetComponent<BoxCollider>().bounds.center;
+        audio = targetController.GetComponentInChildren<AudioSource>();
     }
     // Update is called once per frame
     void Update()
     {
-        if (headMarker_targetController._hitHeadMarker)
+        print(audio.gameObject.name);
+        // targetController._hitHeadMarkerは
+        print(targetController._hitHeadMarker);
+        print(parent);
+        print(headMarkerCenter);
+        if (targetController._hitHeadMarker)
         {
-            scoreController.CalcScore(headMarkerCenter, headMarker_targetController.hitPosition);
-            headMarker_targetController._hitHeadMarker = false;
+            scoreController.CalcScore(headMarkerCenter,targetController.hitPosition);
+            targetController._hitHeadMarker = false;
         }
     }
 }
