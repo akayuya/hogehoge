@@ -7,7 +7,7 @@ public class TargetController : MonoBehaviour
     private const int END_REVIVE_MOTION_INTERVAL = 5;
     private const int TARGET_HP_FULL = 5;
     private int _targetHP = 5;
-    private bool _isCrushTarget;
+    private bool _isDead;
     public bool _hitHeadMarker;
     public Vector3 hitPosition;
 
@@ -18,23 +18,23 @@ public class TargetController : MonoBehaviour
         {
             return;
         }
-        _isCrushTarget = true;
-        targetMotion.SetBool("IsCrushTarget", _isCrushTarget);
+        _isDead = true;
+        targetMotion.SetBool("IsCrushTarget", _isDead);
 
         StartCoroutine(Revive());
     }
     //TargetがCrushMotionを繰り返さないようにモーション終了後は_isCrushTargetをfalseに。 　
     private IEnumerator Revive()
     {
-        if (!_isCrushTarget)
+        if (!_isDead)
         {
             yield break;
         }
 
         yield return new WaitForSeconds(END_REVIVE_MOTION_INTERVAL);
 
-        _isCrushTarget = false;
-        targetMotion.SetBool("IsCrushTarget", _isCrushTarget);
+        _isDead = false;
+        targetMotion.SetBool("IsCrushTarget", _isDead);
 
         RecoverTargetHP();
     }
@@ -49,7 +49,7 @@ public class TargetController : MonoBehaviour
     }
     public void HitTarget()
     {
-        if (_isCrushTarget)
+        if (_isDead)
         {
             return;
         }
@@ -59,10 +59,13 @@ public class TargetController : MonoBehaviour
         {
             Dead();
         }
-
     }
     public void HitHeadMarker(Vector3 hitPos)
     {
+        if (_isDead)
+        {
+            return;
+        }
         hitPosition = hitPos;
         _hitHeadMarker = true;
     }
