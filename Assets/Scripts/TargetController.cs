@@ -13,7 +13,7 @@ public class TargetController : MonoBehaviour
     public Vector3 hitPosition;
 
     // Use this for initialization
-    private void DeadTarget()
+    private void Dead()
     {
         if (_targetHP != TARGET_HP_EMPTY)
         {
@@ -22,10 +22,10 @@ public class TargetController : MonoBehaviour
         _isCrushTarget = true;
         targetMotion.SetBool("IsCrushTarget", _isCrushTarget);
 
-        StartCoroutine(ReviveTarget());
+        StartCoroutine(Revive());
     }
     //TargetがCrushMotionを繰り返さないようにモーション終了後は_isCrushTargetをfalseに。 　
-    private IEnumerator ReviveTarget()
+    private IEnumerator Revive()
     {
         if (!_isCrushTarget)
         {
@@ -54,7 +54,7 @@ public class TargetController : MonoBehaviour
         print(_targetHP);
         if (_targetHP == TARGET_HP_EMPTY)
         {
-            DeadTarget();
+            Dead();
         }
     }
     public void HitHeadMarker(Vector3 hitPos)
