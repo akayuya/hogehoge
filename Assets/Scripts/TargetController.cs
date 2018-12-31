@@ -24,9 +24,9 @@ public class TargetController : MonoBehaviour
         _isCrushTarget = true;
         targetMotion.SetBool("IsCrushTarget", _isCrushTarget);
 
-        StartCoroutine(ReviveTargetMotion());
+        StartCoroutine(EndTargetMotion());
     }
-    public IEnumerator ReviveTargetMotion()
+    private IEnumerator EndTargetMotion()
     {
         if (!_isCrushTarget)
         {
@@ -35,17 +35,12 @@ public class TargetController : MonoBehaviour
 
         yield return new WaitForSeconds(END_REVIVE_MOTION_INTERVAL);
 
-        StopTargetMotion();
+        _isCrushTarget = false;
+        targetMotion.SetBool("IsCrushTarget", _isCrushTarget);
 
         RecoverTargetHP();
     }
-    public void StopTargetMotion()
-    {
-        _isCrushTarget = false;
-        targetMotion.SetBool("IsCrushTarget", _isCrushTarget);
-    }
-
-    public void RecoverTargetHP()
+    private void RecoverTargetHP()
     {
         if (_targetHP != TARGET_HP_EMPTY)
         {
@@ -54,7 +49,6 @@ public class TargetController : MonoBehaviour
         _targetHP = TARGET_HP_FULL;
         print(_targetHP + "HP回復");
     }
-
     public void HitTarget()
     {
         _targetHP--;
