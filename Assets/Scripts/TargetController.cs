@@ -4,10 +4,9 @@ using UnityEngine;
 public class TargetController : MonoBehaviour
 {
     [SerializeField] Animator targetMotion;
-    private const int TARGET_HP_EMPTY = 0;
     private const int END_REVIVE_MOTION_INTERVAL = 5;
     private const int TARGET_HP_FULL = 5;
-    private static int _targetHP = 5;
+    private int _targetHP = 5;
     private bool _isCrushTarget;
     public bool _hitHeadMarker;
     public Vector3 hitPosition;
@@ -15,7 +14,7 @@ public class TargetController : MonoBehaviour
     // Use this for initialization
     private void Dead()
     {
-        if (_targetHP != TARGET_HP_EMPTY)
+        if (_targetHP != 0)
         {
             return;
         }
@@ -41,7 +40,7 @@ public class TargetController : MonoBehaviour
     }
     private void RecoverTargetHP()
     {
-        if (_targetHP > TARGET_HP_EMPTY)
+        if (_targetHP > 0)
         {
             return;
         }
@@ -52,7 +51,7 @@ public class TargetController : MonoBehaviour
     {
         _targetHP--;
         print(_targetHP);
-        if (_targetHP == TARGET_HP_EMPTY)
+        if (_targetHP == 0)
         {
             Dead();
         }
