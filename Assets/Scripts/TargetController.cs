@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 public class TargetController : MonoBehaviour
 {
-    // HeadMarkerのTargetController.csが反応した時にも、
-    // Targetのアニメーションが再生されるようにTargetのAnimatorを取得。
-    [SerializeField] Animator targetMotion;
     private const int TARGET_HP_EMPTY = 0;
     private const int END_REVIVE_MOTION_INTERVAL = 5;
     private const int TARGET_HP_FULL = 5;
@@ -20,21 +17,21 @@ public class TargetController : MonoBehaviour
     {
         if (_targetHP == TARGET_HP_EMPTY)
         {
-            CrushTargetMotion();
+            FallTargetMotion();
         }
     }
-    private void CrushTargetMotion()
+    private void FallTargetMotion()
     {
         if (_targetHP != TARGET_HP_EMPTY)
         {
             return;
         }
         _isCrushTarget = true;
-        targetMotion.SetBool("IsCrushTarget", _isCrushTarget);
+        this.GetComponent<Animator>().SetBool("IsCrushTarget", _isCrushTarget);
 
-        StartCoroutine(ReviveTargetMotion());
+        StartCoroutine(GetUpTargetMotion());
     }
-    private IEnumerator ReviveTargetMotion()
+    private IEnumerator GetUpTargetMotion()
     {
         if (!_isCrushTarget)
         {
@@ -44,7 +41,7 @@ public class TargetController : MonoBehaviour
         yield return new WaitForSeconds(END_REVIVE_MOTION_INTERVAL);
 
         _isCrushTarget = false;
-        targetMotion.SetBool("IsCrushTarget", _isCrushTarget);
+        this.GetComponent<Animator>().SetBool("IsCrushTarget", _isCrushTarget);
 
         RecoverTargetHP();
     }
