@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 public class TargetController : MonoBehaviour
 {
+    [SerializeField] Animator targetMotion;
     private const int TARGET_HP_EMPTY = 0;
     private const int END_REVIVE_MOTION_INTERVAL = 5;
     private const int TARGET_HP_FULL = 5;
@@ -12,25 +13,18 @@ public class TargetController : MonoBehaviour
     public Vector3 hitPosition;
 
     // Use this for initialization
-
-    private void Update()
-    {
-        if (_targetHP == TARGET_HP_EMPTY)
-        {
-            FallTargetMotion();
-        }
-    }
-    private void FallTargetMotion()
+    private void ToppleOverTargetMotion()
     {
         if (_targetHP != TARGET_HP_EMPTY)
         {
             return;
         }
         _isCrushTarget = true;
-        this.GetComponent<Animator>().SetBool("IsCrushTarget", _isCrushTarget);
+        targetMotion.SetBool("IsCrushTarget", _isCrushTarget);
 
         StartCoroutine(GetUpTargetMotion());
     }
+    //TargetがCrushMotionを繰り返さないようにモーション終了後は_isCrushTargetをfalseに。 　
     private IEnumerator GetUpTargetMotion()
     {
         if (!_isCrushTarget)
@@ -41,7 +35,7 @@ public class TargetController : MonoBehaviour
         yield return new WaitForSeconds(END_REVIVE_MOTION_INTERVAL);
 
         _isCrushTarget = false;
-        this.GetComponent<Animator>().SetBool("IsCrushTarget", _isCrushTarget);
+        targetMotion.SetBool("IsCrushTarget", _isCrushTarget);
 
         RecoverTargetHP();
     }
@@ -58,6 +52,10 @@ public class TargetController : MonoBehaviour
     {
         _targetHP--;
         print(_targetHP);
+        if (_targetHP == TARGET_HP_EMPTY)
+        {
+            ToppleOverTargetMotion();
+        }
     }
     public void HitHeadMarker(Vector3 hitPos)
     {
