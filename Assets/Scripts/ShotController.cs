@@ -79,12 +79,10 @@ public class ShotController : MonoBehaviour
                 targetController = hitObjCollider.gameObject.transform.parent.GetComponent<TargetController>();
                 targetController.HitHeadMarker(hitObjPosition);
                 targetController.HitTarget();
-                targetController.CrushTargetMotion();
             }
             else if (targetController != null)
             {
                 targetController.HitTarget();
-                targetController.CrushTargetMotion();
             }
         }
     }

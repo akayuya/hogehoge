@@ -15,7 +15,15 @@ public class TargetController : MonoBehaviour
     public Vector3 hitPosition;
 
     // Use this for initialization
-    public void CrushTargetMotion()
+
+    private void Update()
+    {
+        if (_targetHP == TARGET_HP_EMPTY)
+        {
+            CrushTargetMotion();
+        }
+    }
+    private void CrushTargetMotion()
     {
         if (_targetHP != TARGET_HP_EMPTY)
         {
@@ -24,9 +32,9 @@ public class TargetController : MonoBehaviour
         _isCrushTarget = true;
         targetMotion.SetBool("IsCrushTarget", _isCrushTarget);
 
-        StartCoroutine(EndTargetMotion());
+        StartCoroutine(ReviveTargetMotion());
     }
-    private IEnumerator EndTargetMotion()
+    private IEnumerator ReviveTargetMotion()
     {
         if (!_isCrushTarget)
         {
@@ -42,7 +50,7 @@ public class TargetController : MonoBehaviour
     }
     private void RecoverTargetHP()
     {
-        if (_targetHP != TARGET_HP_EMPTY)
+        if (_targetHP > TARGET_HP_EMPTY)
         {
             return;
         }
