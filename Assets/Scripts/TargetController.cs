@@ -49,12 +49,17 @@ public class TargetController : MonoBehaviour
     }
     public void HitTarget()
     {
+        if (_isCrushTarget)
+        {
+            return;
+        }
         _targetHP--;
         print(_targetHP);
         if (_targetHP == 0)
         {
             Dead();
         }
+
     }
     public void HitHeadMarker(Vector3 hitPos)
     {
