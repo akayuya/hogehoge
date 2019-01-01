@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
     {
         _timeLimit = TIME_LIMIT - Time.time;
 
-        uiManager.IndicateText(_timeLimit,scoreController._targetScore,shotController._bulletBox,shotController._bullet,BULLET_STOCK_FIRST);
+        uiManager.UpdateText(_timeLimit,scoreController._targetScore,shotController._bulletBox,shotController._bullet,BULLET_STOCK_FIRST);
 
         if (targetController._hitHeadMarker)
         {
