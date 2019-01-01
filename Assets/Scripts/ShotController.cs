@@ -5,12 +5,12 @@ public class ShotController : MonoBehaviour
 {
     [SerializeField] private AudioClip shotSound;
     [SerializeField] private AudioClip reloadSound;
-    [SerializeField] private int _bulletBox;
-    [SerializeField] private int _bullet;
+    [SerializeField] public int _bulletBox;
+    [SerializeField] public int _bullet;
     [System.NonSerialized] public Vector3 hitObjPosition;
     public Ray shotRay;
     public RaycastHit gunShotHit;
-    public Collider hitObjCollider;
+    [System.NonSerialized] public Collider hitObjCollider;
     private GameObject shotEffect;
     private GameObject shotReachEffect;
     private float shotInterval;
@@ -19,7 +19,6 @@ public class ShotController : MonoBehaviour
     private const int RELOAD_BORDER_TIME = 2;
     private const float SHOT_BORDER_TIME = 0.5f;
     private const int BULLET_STOCK_FULL = 30;
-
     // Use this for initialization
     void Start()
     {
@@ -33,6 +32,7 @@ public class ShotController : MonoBehaviour
         shotInterval += Time.deltaTime;
         reloadInterval += Time.deltaTime;
 
+
         if (Input.GetMouseButtonDown(0))
         {
             ShotGun();
@@ -45,20 +45,12 @@ public class ShotController : MonoBehaviour
     }
     private void ShotGun()
     {
-        if (shotInterval < SHOT_BORDER_TIME)
-        {
-            return;
-        }
+        if (shotInterval < SHOT_BORDER_TIME) return;
 
-        if (reloadInterval < RELOAD_BORDER_TIME)
-        {
-            return;
-        }
+        if (reloadInterval < RELOAD_BORDER_TIME)　return;
 
-        if (_bullet <= 0)
-        {
-            return;
-        }
+        if (_bullet <= 0)　return;
+
         _bullet -= 1;
         shotInterval = 0;
 
@@ -86,22 +78,16 @@ public class ShotController : MonoBehaviour
             }
         }
     }
-
         private void ReloadBullet()
         {
             if (_bulletBox == 0) return;
-            if (shotInterval < SHOT_BORDER_TIME)
-            {
-                return;
-            }
-            if (reloadInterval < RELOAD_BORDER_TIME)
-            {
-                return;
-            }
-            if (_bullet >= BULLET_STOCK_FULL)
-            {
-                return;
-            }
+
+            if (shotInterval < SHOT_BORDER_TIME)　return;
+
+            if (reloadInterval < RELOAD_BORDER_TIME)　return;
+
+            if (_bullet >= BULLET_STOCK_FULL)　return;
+
             reloadInterval = 0;
             gunAudioSource.PlayOneShot(reloadSound);
             for (int i = 1; _bullet < BULLET_STOCK_FULL; ++i)

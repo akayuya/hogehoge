@@ -5,8 +5,12 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] ScoreController scoreController;
     [SerializeField] TargetController targetController;
-    public Vector3 headMarkerCenter;
     [SerializeField] BoxCollider headMarkerBoxCollider;
+    public Vector3 headMarkerCenter;
+    public float _timeLimit;
+    private const float TIME_LIMIT = 90;
+
+
     // Use this for initialization
     void Start()
     {
@@ -17,8 +21,9 @@ public class GameManager : MonoBehaviour
     {
         if (targetController._hitHeadMarker)
         {
-            scoreController.CalcScore(headMarkerCenter,targetController.hitPosition);
+            scoreController.CalcScore(headMarkerCenter, targetController.hitPosition);
             targetController._hitHeadMarker = false;
         }
+        _timeLimit = TIME_LIMIT - Time.time;
     }
 }
