@@ -14,10 +14,8 @@ public class TargetController : MonoBehaviour
     // Use this for initialization
     private void Dead()
     {
-        if (_targetHP != 0)
-        {
-            return;
-        }
+        if (_targetHP != 0)　return;
+
         _isDead = true;
         targetMotion.SetBool("IsCrushTarget", _isDead);
 
@@ -26,10 +24,7 @@ public class TargetController : MonoBehaviour
     //TargetがCrushMotionを繰り返さないようにモーション終了後は_isCrushTargetをfalseに。 　
     private IEnumerator Revive()
     {
-        if (!_isDead)
-        {
-            yield break;
-        }
+        if (!_isDead)　yield break;
 
         yield return new WaitForSeconds(END_REVIVE_MOTION_INTERVAL);
 
@@ -40,19 +35,15 @@ public class TargetController : MonoBehaviour
     }
     private void RecoverTargetHP()
     {
-        if (_targetHP > 0)
-        {
-            return;
-        }
+        if (_targetHP > 0)　return;
+
         _targetHP = TARGET_HP_FULL;
         print(_targetHP + "HP回復");
     }
     public void HitTarget()
     {
-        if (_isDead)
-        {
-            return;
-        }
+        if (_isDead) return;
+
         _targetHP--;
         print(_targetHP);
         if (_targetHP == 0)
@@ -62,10 +53,8 @@ public class TargetController : MonoBehaviour
     }
     public void HitHeadMarker(Vector3 hitPos)
     {
-        if (_isDead)
-        {
-            return;
-        }
+        if (_isDead) return;
+        
         hitPosition = hitPos;
         _hitHeadMarker = true;
     }
