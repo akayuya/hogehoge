@@ -4,27 +4,16 @@ using UnityEngine;
 using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
-    [SerializeField] private Text timeText;
-    [SerializeField] private Text bulletText;
-    [SerializeField] private Text bulletBoxText;
-    [SerializeField] private Text scoreText;
-    [SerializeField] private ScoreController scoreController;
-    [SerializeField] private ShotController shotController;
-    [SerializeField] private GameManager gameManager;
-    private int _bulletStockFirst;
+    [SerializeField] public Text timeText;
+    [SerializeField] public Text bulletText;
+    [SerializeField] public Text bulletBoxText;
+    [SerializeField] public Text scoreText;
     // Use this for initialization
-
-    // Update is called once per frame
-    void Start()
+    public void IndicateText(float _timeLimit,float _targetScore, float _bulletBox, float _bullet, float _bulletStockFirst)
     {
-        _bulletStockFirst = shotController._bullet;
-    }
-
-    void Update()
-    {
-        timeText.text = "Time：" + gameManager._timeLimit + "s";
-        scoreText.text = "Pt：" + scoreController._targetScore;
-        bulletBoxText.text = "Bullet Box：" + shotController._bulletBox;
-        bulletText.text = "Bullet：" + shotController._bullet + "/" + _bulletStockFirst;
+        timeText.text = "Time：" + _timeLimit.ToString("f1") + "s";
+        scoreText.text = "Pt：" + _targetScore.ToString("f1");
+        bulletBoxText.text = "Bullet Box：" + _bulletBox;
+        bulletText.text = "Bullet：" + _bullet + "/" + _bulletStockFirst;
     }
 }

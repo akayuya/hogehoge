@@ -11,5 +11,4 @@ public class ScoreController : MonoBehaviour
         _targetScore += ((Vector3.Distance(center, hitPosition)) * SCORE_MAGNIFICATION);
         print(_targetScore);
     }
-
 }
