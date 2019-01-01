@@ -4,10 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
-    [SerializeField] public Text timeText;
-    [SerializeField] public Text bulletText;
-    [SerializeField] public Text bulletBoxText;
-    [SerializeField] public Text scoreText;
+    [SerializeField] private Text timeText;
+    [SerializeField] private Text bulletText;
+    [SerializeField] private Text bulletBoxText;
+    [SerializeField] private Text scoreText;
     // Use this for initialization
     public void UpdateText(float _timeLimit,float _targetScore, float _bulletBox, float _bullet, float _bulletStockFirst)
     {
