@@ -23,18 +23,13 @@ public class ShotController : MonoBehaviour
     private const int BULLET_STOCK_FULL = 30;
     private const int ZOOM_IN_SCOPE = 20;
     private const int ZOOM_OUT_SCOPE = 60;
-    private const int SNIPE_MODE_SCOPEIMAGE_Z = 300;
-    private const int DEFAULT_MODE_SCOPEIMAGE_Z = -5000;
-    [SerializeField] private RectTransform scopeImage;
-    private Vector3 scopeImagePos;
-
+    [SerializeField] private Image scopeImage;
     // Use this for initialization
     void Start()
     {
         shotEffect = Resources.Load<GameObject>("Effects/ShotEffect");
         shotReachEffect = Resources.Load<GameObject>("Effects/ShotReachEffect");
         gunAudioSource = gameObject.GetComponent<AudioSource>();
-        scopeImagePos = scopeImage.position;
     }
     // Update is called once per frame
     void Update()
@@ -53,7 +48,7 @@ public class ShotController : MonoBehaviour
         }
         if (Input.GetMouseButtonDown(1))
         {
-            SnipeMode();
+            ZoomScope();
         }
     }
     private void ShotGun()
@@ -112,19 +107,17 @@ public class ShotController : MonoBehaviour
             }
         }
     }
-    private void SnipeMode()
+    private void ZoomScope()
     {
-        if (!_snipeMode)
-        {
-            Camera.main.fieldOfView = ZOOM_IN_SCOPE;
-            scopeImage.localPosition = new Vector3(0,5,SNIPE_MODE_SCOPEIMAGE_Z);
-            _snipeMode = true;
-        }
-        else if(_snipeMode)
+        if (_snipeMode)
         {
             Camera.main.fieldOfView = ZOOM_OUT_SCOPE;
-            scopeImage.localPosition = new Vector3 (0,5,DEFAULT_MODE_SCOPEIMAGE_Z);
+            scopeImage.gameObject.SetActive(false);
             _snipeMode = false;
+            return;
         }
+        Camera.main.fieldOfView = ZOOM_IN_SCOPE;
+        scopeImage.gameObject.SetActive(true);
+        _snipeMode = true;
     }
 }
