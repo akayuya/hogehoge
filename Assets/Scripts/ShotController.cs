@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 public class ShotController : MonoBehaviour
 {
     [SerializeField] private AudioClip shotSound;
@@ -8,30 +9,38 @@ public class ShotController : MonoBehaviour
     [SerializeField] public int _bulletBox;
     [SerializeField] public int _bullet;
     [System.NonSerialized] public Vector3 hitObjPosition;
+    [System.NonSerialized] public Collider hitObjCollider;
     public Ray shotRay;
     public RaycastHit gunShotHit;
-    [System.NonSerialized] public Collider hitObjCollider;
     private GameObject shotEffect;
     private GameObject shotReachEffect;
+    private bool _snipeMode;
     private float shotInterval;
     private float reloadInterval;
     private AudioSource gunAudioSource;
     private const int RELOAD_BORDER_TIME = 2;
     private const float SHOT_BORDER_TIME = 0.5f;
     private const int BULLET_STOCK_FULL = 30;
+    private const int ZOOM_IN_SCOPE = 20;
+    private const int ZOOM_OUT_SCOPE = 60;
+    private const int SNIPE_MODE_SCOPEIMAGE_Z = 300;
+    private const int DEFAULT_MODE_SCOPEIMAGE_Z = -5000;
+    [SerializeField] private RectTransform scopeImage;
+    private Vector3 scopeImagePos;
+
     // Use this for initialization
     void Start()
     {
         shotEffect = Resources.Load<GameObject>("Effects/ShotEffect");
         shotReachEffect = Resources.Load<GameObject>("Effects/ShotReachEffect");
         gunAudioSource = gameObject.GetComponent<AudioSource>();
+        scopeImagePos = scopeImage.position;
     }
     // Update is called once per frame
     void Update()
     {
         shotInterval += Time.deltaTime;
         reloadInterval += Time.deltaTime;
-
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -42,14 +51,18 @@ public class ShotController : MonoBehaviour
         {
             ReloadBullet();
         }
+        if (Input.GetMouseButtonDown(1))
+        {
+            SnipeMode();
+        }
     }
     private void ShotGun()
     {
         if (shotInterval < SHOT_BORDER_TIME) return;
 
-        if (reloadInterval < RELOAD_BORDER_TIME)　return;
+        if (reloadInterval < RELOAD_BORDER_TIME) return;
 
-        if (_bullet <= 0)　return;
+        if (_bullet <= 0) return;
 
         _bullet -= 1;
         shotInterval = 0;
@@ -78,25 +91,40 @@ public class ShotController : MonoBehaviour
             }
         }
     }
-        private void ReloadBullet()
+    private void ReloadBullet()
+    {
+        if (_bulletBox == 0) return;
+
+        if (shotInterval < SHOT_BORDER_TIME) return;
+
+        if (reloadInterval < RELOAD_BORDER_TIME) return;
+
+        if (_bullet >= BULLET_STOCK_FULL) return;
+
+        reloadInterval = 0;
+        gunAudioSource.PlayOneShot(reloadSound);
+        for (int i = 1; _bullet < BULLET_STOCK_FULL; ++i)
         {
-            if (_bulletBox == 0) return;
-
-            if (shotInterval < SHOT_BORDER_TIME)　return;
-
-            if (reloadInterval < RELOAD_BORDER_TIME)　return;
-
-            if (_bullet >= BULLET_STOCK_FULL)　return;
-
-            reloadInterval = 0;
-            gunAudioSource.PlayOneShot(reloadSound);
-            for (int i = 1; _bullet < BULLET_STOCK_FULL; ++i)
+            if (_bulletBox > 0)
             {
-                if (_bulletBox > 0)
-                {
-                    _bullet += 1;
-                    _bulletBox -= 1;
-                }
+                _bullet += 1;
+                _bulletBox -= 1;
             }
         }
     }
+    private void SnipeMode()
+    {
+        if (!_snipeMode)
+        {
+            Camera.main.fieldOfView = ZOOM_IN_SCOPE;
+            scopeImage.localPosition = new Vector3(0,5,SNIPE_MODE_SCOPEIMAGE_Z);
+            _snipeMode = true;
+        }
+        else if(_snipeMode)
+        {
+            Camera.main.fieldOfView = ZOOM_OUT_SCOPE;
+            scopeImage.localPosition = new Vector3 (0,5,DEFAULT_MODE_SCOPEIMAGE_Z);
+            _snipeMode = false;
+        }
+    }
+}
