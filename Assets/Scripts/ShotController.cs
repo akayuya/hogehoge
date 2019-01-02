@@ -14,7 +14,6 @@ public class ShotController : MonoBehaviour
     public RaycastHit gunShotHit;
     private GameObject shotEffect;
     private GameObject shotReachEffect;
-    private bool _snipeMode;
     private float shotInterval;
     private float reloadInterval;
     private AudioSource gunAudioSource;
@@ -30,6 +29,7 @@ public class ShotController : MonoBehaviour
         shotEffect = Resources.Load<GameObject>("Effects/ShotEffect");
         shotReachEffect = Resources.Load<GameObject>("Effects/ShotReachEffect");
         gunAudioSource = gameObject.GetComponent<AudioSource>();
+        _zoomCamera = Camera.main.fieldOfView;
     }
     // Update is called once per frame
     void Update()
@@ -109,15 +109,13 @@ public class ShotController : MonoBehaviour
     }
     private void ZoomScope()
     {
-        if (_snipeMode)
+        if (Camera.main.fieldOfView != ZOOM_IN_SCOPE)
         {
-            Camera.main.fieldOfView = ZOOM_OUT_SCOPE;
-            scopeImage.gameObject.SetActive(false);
-            _snipeMode = false;
+            Camera.main.fieldOfView = ZOOM_IN_SCOPE;
+            scopeImage.gameObject.SetActive(true);
             return;
         }
-        Camera.main.fieldOfView = ZOOM_IN_SCOPE;
-        scopeImage.gameObject.SetActive(true);
-        _snipeMode = true;
+        Camera.main.fieldOfView = ZOOM_OUT_SCOPE;
+        scopeImage.gameObject.SetActive(false);
     }
 }
