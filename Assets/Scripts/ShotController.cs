@@ -21,8 +21,8 @@ public class ShotController : MonoBehaviour
     private const float SHOT_BORDER_TIME = 0.5f;
 
 
-    private bool _snipeMode;
     [SerializeField] private Image scopeImage;
+    private bool _snipeMode;
     private const int ZOOM_IN_SCOPE = 20;
     private const int ZOOM_OUT_SCOPE = 60;
 
@@ -96,7 +96,7 @@ public class ShotController : MonoBehaviour
         if (shotInterval < SHOT_BORDER_TIME) return;
 
         if (reloadInterval < RELOAD_BORDER_TIME) return;
-        
+
         if (_bullet >= BULLET_STOCK_FULL) return;
 
         reloadInterval = 0;

@@ -1,14 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 public class ScoreController : MonoBehaviour
 {
-    public float _targetScore;
-    private const int HIT_HEADMARKER_SCORE_CENTER = 50;
+    [System.NonSerialized] public float _score;
     private const int SCORE_MAGNIFICATION = 50;
+
     public void CalcScore(Vector3 center, Vector3 hitPosition)
     {
-        _targetScore += ((Vector3.Distance(center, hitPosition)) * SCORE_MAGNIFICATION);
-        print(_targetScore);
+        _score += ((Vector3.Distance(center, hitPosition)) * SCORE_MAGNIFICATION);
+        print(_score);
     }
 }
