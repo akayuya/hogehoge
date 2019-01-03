@@ -4,33 +4,34 @@ using UnityEngine;
 using UnityEngine.UI;
 public class ShotController : MonoBehaviour
 {
+
     [SerializeField] private AudioClip shotSound;
     [SerializeField] private AudioClip reloadSound;
-    [SerializeField] public int _bulletBox;
-    [SerializeField] public int _bullet;
-    // [System.NonSerialized] public Vector3 hitObjPosition;
-    // [System.NonSerialized] public Collider hitObjCollider;
-    public RaycastHit hitTarget;
     private GameObject shotEffect;
     private GameObject shotReachEffect;
+    private AudioSource gunAudioSource;
+
+
+    public int _bulletBox;
+    public int _bullet;
+    private const int BULLET_STOCK_FULL = 30;
     private float shotInterval;
     private float reloadInterval;
-    private bool _snipeMode;
-    private AudioSource gunAudioSource;
     private const int RELOAD_BORDER_TIME = 2;
     private const float SHOT_BORDER_TIME = 0.5f;
-    private const int BULLET_STOCK_FULL = 30;
+
+
+    private bool _snipeMode;
+    [SerializeField] private Image scopeImage;
     private const int ZOOM_IN_SCOPE = 20;
     private const int ZOOM_OUT_SCOPE = 60;
-    [SerializeField] private Image scopeImage;
-    // Use this for initialization
+
     void Start()
     {
         shotEffect = Resources.Load<GameObject>("Effects/ShotEffect");
         shotReachEffect = Resources.Load<GameObject>("Effects/ShotReachEffect");
         gunAudioSource = GetComponent<AudioSource>();
     }
-    // Update is called once per frame
     void Update()
     {
         shotInterval += Time.deltaTime;
@@ -62,11 +63,13 @@ public class ShotController : MonoBehaviour
         shotInterval = 0;
         gunAudioSource.PlayOneShot(shotSound);
 
+        RaycastHit hitRay;
+
         Ray shotRay = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
-        if (Physics.Raycast(shotRay, out hitTarget))
+        if (Physics.Raycast(shotRay, out hitRay))
         {
-            Vector3 hitObjPosition = hitTarget.point;
-            Collider hitObjCollider = hitTarget.collider;
+            Vector3 hitObjPosition = hitRay.point;
+            Collider hitObjCollider = hitRay.collider;
 
             Instantiate(shotEffect, this.transform.position, Quaternion.identity);
             Instantiate(shotReachEffect, hitObjPosition, Quaternion.identity);
