@@ -9,6 +9,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Text bulletText;
     [SerializeField] private Text bulletBoxText;
     [SerializeField] private Text scoreText;
+    
     public void UpdateText(float _timeLimit,float _score, float _bulletBox, float _bullet, float _bulletStockFirst)
     {
         timeLimtText.text = "Time：" + _timeLimit.ToString("f1") + "s";

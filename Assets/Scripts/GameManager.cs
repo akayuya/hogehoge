@@ -7,9 +7,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] ScoreController scoreController;
     [SerializeField] TargetController targetController;
     [SerializeField] ShotController shotController;
-    [SerializeField] BoxCollider headMarkerBoxCollider;
     [SerializeField] UIManager uiManager;
-    [System.NonSerialized] public Vector3 headMarkerCenter;
+    [SerializeField] BoxCollider headMarkerBoxCollider;
+    private Vector3 headMarkerCenter;
 
 
     private float _timeLimit;
