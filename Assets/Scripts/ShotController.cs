@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+
 public class ShotController : MonoBehaviour
 {
-
     [SerializeField] private AudioClip shotSound;
     [SerializeField] private AudioClip reloadSound;
     private AudioSource gunAudioSource;
@@ -41,7 +41,6 @@ public class ShotController : MonoBehaviour
         {
             Shot();
         }
-
         if (Input.GetKeyDown(KeyCode.R))
         {
             ReloadBullet();
@@ -64,21 +63,21 @@ public class ShotController : MonoBehaviour
         gunAudioSource.PlayOneShot(shotSound);
 
         RaycastHit hitRay;
-
         Ray shotRay = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
+
         if (Physics.Raycast(shotRay, out hitRay))
         {
             Vector3 hitObjPosition = hitRay.point;
             Collider hitObjCollider = hitRay.collider;
+            TargetController targetController = hitObjCollider.gameObject.GetComponent<TargetController>();
 
             Instantiate(shotEffect, this.transform.position, Quaternion.identity);
             Instantiate(shotReachEffect, hitObjPosition, Quaternion.identity);
 
-            TargetController targetController = hitObjCollider.gameObject.GetComponent<TargetController>();
-
             if (hitObjCollider.gameObject.tag == "HeadMarker")
             {
                 targetController = hitObjCollider.gameObject.transform.parent.GetComponent<TargetController>();
+
                 targetController.HitHeadMarker(hitObjPosition);
                 targetController.HitTarget();
             }
@@ -100,6 +99,7 @@ public class ShotController : MonoBehaviour
 
         reloadInterval = 0;
         gunAudioSource.PlayOneShot(reloadSound);
+
         for (int i = 1; _bullet < BULLET_STOCK_FULL; ++i)
         {
             if (_bulletBox > 0)
