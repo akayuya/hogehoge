@@ -29,11 +29,10 @@ public class ShotController : MonoBehaviour
     void Start()
     {
         shotEffect = Resources.Load<GameObject>("Effects/ShotEffect");
-
         shotReachEffect = Resources.Load<GameObject>("Effects/ShotReachEffect");
-
         gunAudioSource = GetComponent<AudioSource>();
     }
+
     void Update()
     {
         shotInterval += Time.deltaTime;
@@ -63,7 +62,6 @@ public class ShotController : MonoBehaviour
 
         _bullet -= 1;
         shotInterval = 0;
-
         gunAudioSource.PlayOneShot(shotSound);
 
         RaycastHit hitRay;
@@ -76,15 +74,12 @@ public class ShotController : MonoBehaviour
             TargetController targetController = hitObjCollider.gameObject.GetComponent<TargetController>();
 
             Instantiate(shotEffect, this.transform.position, Quaternion.identity);
-
             Instantiate(shotReachEffect, hitObjPosition, Quaternion.identity);
 
             if (hitObjCollider.gameObject.tag == "HeadMarker")
             {
                 targetController = hitObjCollider.gameObject.transform.parent.GetComponent<TargetController>();
-
                 targetController.HitHeadMarker(hitObjPosition);
-
                 targetController.HitTarget();
             }
             else if (targetController != null)
@@ -101,11 +96,10 @@ public class ShotController : MonoBehaviour
         if (shotInterval < SHOT_BORDER_TIME) return;
 
         if (reloadInterval < RELOAD_BORDER_TIME) return;
-
+        
         if (_bullet >= BULLET_STOCK_FULL) return;
 
         reloadInterval = 0;
-        
         gunAudioSource.PlayOneShot(reloadSound);
 
         for (int i = 1; _bullet < BULLET_STOCK_FULL; ++i)
