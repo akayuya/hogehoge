@@ -50,6 +50,7 @@ public class ShotController : MonoBehaviour
             ZoomScope();
         }
     }
+
     private void Shot()
     {
         if (shotInterval < SHOT_BORDER_TIME) return;
@@ -87,6 +88,7 @@ public class ShotController : MonoBehaviour
             }
         }
     }
+
     private void ReloadBullet()
     {
         if (_bulletBox == 0) return;
@@ -109,6 +111,7 @@ public class ShotController : MonoBehaviour
             }
         }
     }
+    
     private void ZoomScope()
     {
         if (!_snipeMode)
