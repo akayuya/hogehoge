@@ -7,9 +7,9 @@ public class ShotController : MonoBehaviour
 
     [SerializeField] private AudioClip shotSound;
     [SerializeField] private AudioClip reloadSound;
+    private AudioSource gunAudioSource;
     private GameObject shotEffect;
     private GameObject shotReachEffect;
-    private AudioSource gunAudioSource;
 
 
     public int _bulletBox;
