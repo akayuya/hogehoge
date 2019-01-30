@@ -8,7 +8,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 {
     [RequireComponent(typeof(CharacterController))]
     [RequireComponent(typeof(AudioSource))]
-    public class FirstPersonController : MonoBehaviour
+    public class FirstPersonController : Photon.MonoBehaviour
     {
         [SerializeField] private bool m_IsWalking;
         [SerializeField] private float m_WalkSpeed;
@@ -116,6 +116,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         private void FixedUpdate()
         {
+            if(!(photonView.isMine)) return;
+            
             float speed;
             GetInput(out speed);
             // always move along the camera forward as it is the direction that it being aimed at
