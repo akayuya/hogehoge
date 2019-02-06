@@ -103,8 +103,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
                 _isCrouched = false;
             }
-    
-        
         　　　}
 
         private void PlayLandingSound()
@@ -179,6 +177,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
             PlayFootStepAudio();
         }
+
         private void PlayFootStepAudio()
         {
             if (!m_CharacterController.isGrounded)
@@ -194,6 +193,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_FootstepSounds[n] = m_FootstepSounds[0];
             m_FootstepSounds[0] = m_AudioSource.clip;
         }
+
         private void UpdateCameraPosition(float speed)
         {
             Vector3 newCameraPosition;
@@ -219,7 +219,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_Camera.transform.localPosition = newCameraPosition;
         }
 
-
         private void GetInput(out float speed)
         {
             // Read input
@@ -240,7 +239,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
             // speed = (m_IsWalking ? m_WalkSpeed : m_RunSpeed);
 
             
-
             if(m_IsWalking){
     
                 if(_isCrouched){   
@@ -285,7 +283,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
         {
             m_MouseLook.LookRotation(transform, m_Camera.transform);
         }
-
 
         private void OnControllerColliderHit(ControllerColliderHit hit)
         {

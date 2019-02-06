@@ -51,7 +51,7 @@ public class ShotController : MonoBehaviour
             ZoomScope();
         }
     }
-
+    [PunRPC]
     private void Shot()
     {
         if (shotInterval < SHOT_BORDER_TIME) return;
@@ -80,7 +80,7 @@ public class ShotController : MonoBehaviour
             {
                 targetController = hitObjCollider.gameObject.transform.parent.GetComponent<TargetController>();
                 targetController.HitHeadMarker(hitObjPosition);
-                targetController.HitTarget();
+                targetController.HitTarget(); 
             }
             else if (targetController != null)
             {
