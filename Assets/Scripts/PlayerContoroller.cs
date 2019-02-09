@@ -2,42 +2,41 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerContoroller : MonoBehaviour {
+public class PlayerContoroller : Photon.MonoBehaviour {
 
-	private int _playerHP = 5;
+	public int _playerHP = 5;
+	private SpawnController spawnController;
 
-	private const int PLAYER_HP_FULL = 5;
-	private const int DESTROY_PLAYER_INERVAL = 1;
-
-	[SerializeField] private SpawnController spawnController;
+	private PhotonView view;
 
 
-	public void HitPlayer()
+	void Start()
 	{
-		_playerHP--;
-		print("PlayerHP" + _playerHP);
-
-		RecoverPLayerHP();
-
-		if(_playerHP == 0)
-		{
-			StartCoroutine(DeadPlayer());
-		}
+		spawnController = GameObject.FindGameObjectWithTag("SpawnManager").GetComponent<SpawnController>();
+		view  = this.GetComponent<PhotonView>();
 	}
 
-	private void RecoverPLayerHP()
-    {
-        if (_playerHP > 0) return;
-
-        _playerHP = PLAYER_HP_FULL;
-        print(_playerHP + "PlayerHP回復");
-    }
-
-	private IEnumerator DeadPlayer()
+	void update()
 	{
-		yield return new WaitForSeconds(DESTROY_PLAYER_INERVAL);
+		if(_playerHP == 0) 
+		{
+			view.RPC("DeadPlayer",PhotonTargets.AllBuffered);
+		}	
+	}
 
-		Destroy(this);
+	[PunRPC]
+	public void HitPlayer(int _hitPlayerHP)
+	{
+		print("HitPlayerがよばれた");
+		_hitPlayerHP--;
+		print("HitPlayerHP" + _hitPlayerHP);
+		print(view.ownerId);
+	}
+	
+	[PunRPC]
+	private void DeadPlayer()
+	{
+		Destroy(this.gameObject);
 		spawnController.SpawnPlayer();
 	}
 

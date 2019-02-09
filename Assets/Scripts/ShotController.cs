@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ShotController : MonoBehaviour
+public class ShotController : Photon.MonoBehaviour
 {
     [SerializeField] private AudioClip shotSound;
     [SerializeField] private AudioClip reloadSound;
@@ -11,6 +11,7 @@ public class ShotController : MonoBehaviour
     private GameObject shotEffect;
     private GameObject shotReachEffect;
 
+    private PhotonView view;
 
     public int _bulletBox;
     public int _bullet;
@@ -20,17 +21,18 @@ public class ShotController : MonoBehaviour
     private const int RELOAD_BORDER_TIME = 2;
     private const float SHOT_BORDER_TIME = 0.5f;
 
-
     [SerializeField] private Image scopeImage;
     private bool _snipeMode;
     private const int ZOOM_IN_SCOPE = 20;
     private const int ZOOM_OUT_SCOPE = 60;
+
 
     void Start()
     {
         shotEffect = Resources.Load<GameObject>("Effects/ShotEffect");
         shotReachEffect = Resources.Load<GameObject>("Effects/ShotReachEffect");
         gunAudioSource = GetComponent<AudioSource>();
+        view = this.GetComponentInParent<PhotonView>();
     }
 
     void Update()
@@ -51,7 +53,7 @@ public class ShotController : MonoBehaviour
             ZoomScope();
         }
     }
-    [PunRPC]
+
     private void Shot()
     {
         if (shotInterval < SHOT_BORDER_TIME) return;
@@ -71,9 +73,10 @@ public class ShotController : MonoBehaviour
         {
             Vector3 hitObjPosition = hitRay.point;
             Collider hitObjCollider = hitRay.collider;
+            print(hitObjCollider);
             TargetController targetController = hitObjCollider.gameObject.GetComponent<TargetController>();
 
-            Instantiate(shotEffect, this.transform.position, Quaternion.identity);
+            Instantiate(shotEffect,this.transform.position, Quaternion.identity);
             Instantiate(shotReachEffect, hitObjPosition, Quaternion.identity);
 
             if (hitObjCollider.gameObject.tag == "HeadMarker")
@@ -85,6 +88,12 @@ public class ShotController : MonoBehaviour
             else if (targetController != null)
             {
                 targetController.HitTarget();
+            }
+
+            if(hitObjCollider.gameObject.tag == "Player")
+            { 
+                PlayerContoroller playerContoroller = hitObjCollider.gameObject.GetComponent<PlayerContoroller>();
+                view.RPC("HitPlayer",PhotonTargets.AllBuffered,playerContoroller._playerHP);
             }
         }
     }

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Target
   - HeadMarker
+  - SpawnManager
   layers:
   - Default
   - TransparentFX

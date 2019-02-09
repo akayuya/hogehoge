@@ -8,14 +8,14 @@ public class PhotonController : MonoBehaviour
     private const string ROOM_NAME = "RoomA";
 
     // Use this for initialization
-    void Start()
+
+    void Awake()
     {
         PhotonNetwork.ConnectUsingSettings(null);
     }
 
     void OnJoinedLobby()
     {
-        // PhotonNetwork.CreateRoom(null);
         PhotonNetwork.JoinOrCreateRoom(ROOM_NAME, new RoomOptions(), TypedLobby.Default);
         print("JoinedLobby");
     }
@@ -24,13 +24,11 @@ public class PhotonController : MonoBehaviour
     {
         PhotonNetwork.CreateRoom(null);
         print("CreateRoom");
-
     }
 
     void OnJoinedRoom()
     {
         Debug.Log("JoinedRoom");
         spawnController.SpawnPlayer();
-        print("hoeg");
     }
 }

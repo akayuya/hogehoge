@@ -6,7 +6,8 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] ScoreController scoreController;
     [SerializeField] TargetController targetController;
-    [SerializeField] ShotController shotController;
+    private ShotController shotController;
+    
     [SerializeField] UIManager uiManager;
     [SerializeField] BoxCollider headMarkerBoxCollider;
     private Vector3 headMarkerCenter;
@@ -19,10 +20,16 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         headMarkerCenter = headMarkerBoxCollider.bounds.center;
+
     }
 
     void Update()
     {
+        if(shotController == null)
+        {
+            shotController = GameObject.FindGameObjectWithTag("Player").transform.GetComponentInChildren<ShotController>();    
+        }
+
         _timeLimit = TIME_LIMIT - Time.time;
         uiManager.UpdateText(_timeLimit, scoreController._score, shotController._bulletBox, shotController._bullet, BULLET_STOCK_FIRST);
 
