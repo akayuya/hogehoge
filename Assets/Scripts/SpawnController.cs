@@ -23,6 +23,7 @@ public class SpawnController : MonoBehaviour
             respawn = false;
         }
     }
+    
     public void SpawnPlayer()
     {
         Vector3 playerStartPos = new Vector3(3f, 1f, 3f);

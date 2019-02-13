@@ -29,13 +29,11 @@ public class GameManager : MonoBehaviour
         if(playerController == null)
         {
             GetPlayerController();
-            print(playerController.gameObject.GetPhotonView().ownerId);
         }
         
         if(shotController == null)
         {
             shotController = GetPlayerController().transform.GetComponentInChildren<ShotController>();
-            print(shotController);
         }
 
         _timeLimit = TIME_LIMIT - Time.time;
@@ -60,6 +58,5 @@ public class GameManager : MonoBehaviour
             }
         }
         return playerController;
-    }
-           
+    }       
 }
