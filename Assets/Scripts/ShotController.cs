@@ -11,8 +11,6 @@ public class ShotController : Photon.MonoBehaviour
     private GameObject shotEffect;
     private GameObject shotReachEffect;
 
-    private PhotonView view;
-
     public int _bulletBox;
     public int _bullet;
     private const int BULLET_STOCK_FULL = 30;
@@ -32,7 +30,9 @@ public class ShotController : Photon.MonoBehaviour
         shotEffect = Resources.Load<GameObject>("Effects/ShotEffect");
         shotReachEffect = Resources.Load<GameObject>("Effects/ShotReachEffect");
         gunAudioSource = GetComponent<AudioSource>();
-        view = this.GetComponentInParent<PhotonView>();
+
+        scopeImage = GameObject.FindGameObjectWithTag("SnipeImage").GetComponent<Image>();
+        scopeImage.gameObject.SetActive(false);
     }
 
     void Update()
@@ -76,9 +76,8 @@ public class ShotController : Photon.MonoBehaviour
             print(hitObjCollider);
             TargetController targetController = hitObjCollider.gameObject.GetComponent<TargetController>();
 
-            Instantiate(shotEffect,this.transform.position, Quaternion.identity);
-            Instantiate(shotReachEffect, hitObjPosition, Quaternion.identity);
-
+            ShotEffect(hitObjPosition);
+            
             if (hitObjCollider.gameObject.tag == "HeadMarker")
             {
                 targetController = hitObjCollider.gameObject.transform.parent.GetComponent<TargetController>();
@@ -91,9 +90,8 @@ public class ShotController : Photon.MonoBehaviour
             }
 
             if(hitObjCollider.gameObject.tag == "Player")
-            { 
-                PlayerContoroller playerContoroller = hitObjCollider.gameObject.GetComponent<PlayerContoroller>();
-                view.RPC("HitPlayer",PhotonTargets.AllBuffered,playerContoroller._playerHP);
+            {
+                hitObjCollider.gameObject.GetPhotonView().RPC("HitPlayer",PhotonTargets.All);
             }
         }
     }
@@ -136,4 +134,10 @@ public class ShotController : Photon.MonoBehaviour
             _snipeMode = false;
         }
     }
+
+    private void ShotEffect(Vector3 hitObjPosition)
+    {
+        PhotonNetwork.Instantiate("shotEffect",this.transform.position, Quaternion.identity,0);
+        PhotonNetwork.Instantiate("shotReachEffect", hitObjPosition, Quaternion.identity,0);
+    }    
 }

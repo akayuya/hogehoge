@@ -25,8 +25,8 @@ GameObject:
   - component: {fileID: 82971871613380632}
   - component: {fileID: 95322222509920554}
   - component: {fileID: 114488308947303358}
-  - component: {fileID: 114512918622751182}
   - component: {fileID: 114272262080501122}
+  - component: {fileID: 114512918622751182}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -924,7 +924,6 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 114488308947303358}
   - {fileID: 114870028456207648}
-  - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
   viewIdField: 0
   instantiationId: -1

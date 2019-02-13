@@ -46,4 +46,5 @@ MonoBehaviour:
   - HitPlayer
   - DeadPlayer
   - HitFlag
+  - ShotEffect
   DisableAutoOpenWizard: 1

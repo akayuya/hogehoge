@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] ScoreController scoreController;
     [SerializeField] TargetController targetController;
     private ShotController shotController;
+    private PlayerController playerController;
     
     [SerializeField] UIManager uiManager;
     [SerializeField] BoxCollider headMarkerBoxCollider;
@@ -20,18 +21,25 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         headMarkerCenter = headMarkerBoxCollider.bounds.center;
-
     }
 
     void Update()
     {
+
+        if(playerController == null)
+        {
+            GetPlayerController();
+            print(playerController.gameObject.GetPhotonView().ownerId);
+        }
+        
         if(shotController == null)
         {
-            shotController = GameObject.FindGameObjectWithTag("Player").transform.GetComponentInChildren<ShotController>();    
+            shotController = GetPlayerController().transform.GetComponentInChildren<ShotController>();
+            print(shotController);
         }
 
         _timeLimit = TIME_LIMIT - Time.time;
-        uiManager.UpdateText(_timeLimit, scoreController._score, shotController._bulletBox, shotController._bullet, BULLET_STOCK_FIRST);
+        uiManager.UpdateText(_timeLimit, scoreController._score, shotController._bulletBox, shotController._bullet, BULLET_STOCK_FIRST,playerController._playerHP);
 
         if (targetController._hitHeadMarker)
         {
@@ -39,4 +47,19 @@ public class GameManager : MonoBehaviour
             targetController._hitHeadMarker = false;
         }
     }
+
+    private PlayerController GetPlayerController()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+        foreach(GameObject player in players)
+        {
+            if(player.GetPhotonView().ownerId == players.Length)
+            {
+                playerController = player.GetComponent<PlayerController>();
+            }
+        }
+        return playerController;
+    }
+           
 }

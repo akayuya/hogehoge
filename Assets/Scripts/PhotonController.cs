@@ -7,8 +7,6 @@ public class PhotonController : MonoBehaviour
 	[SerializeField] SpawnController spawnController;
     private const string ROOM_NAME = "RoomA";
 
-    // Use this for initialization
-
     void Awake()
     {
         PhotonNetwork.ConnectUsingSettings(null);
@@ -29,6 +27,6 @@ public class PhotonController : MonoBehaviour
     void OnJoinedRoom()
     {
         Debug.Log("JoinedRoom");
-        spawnController.SpawnPlayer();
+        spawnController.spawn = true;
     }
 }
