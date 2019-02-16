@@ -6,24 +6,19 @@ public class SpawnController : MonoBehaviour
 {
     [SerializeField] GameObject player;
 
-    public bool spawn;
-    public bool respawn;
+    public List<GameObject> players = new List<GameObject>();
+
+    public bool _spawn;
 
     void Update()
     {
-        if(spawn)
+        if(_spawn)
         {
             SpawnPlayer();
-            spawn = false;
-        }
-
-        if(respawn) 
-        {
-            SpawnPlayer();
-            respawn = false;
+            _spawn = false;
         }
     }
-    
+
     public void SpawnPlayer()
     {
         Vector3 playerStartPos = new Vector3(3f, 1f, 3f);
@@ -33,5 +28,6 @@ public class SpawnController : MonoBehaviour
         myPlayer.transform.Find("FirstPersonCharacter").gameObject.SetActive(true);
         ((MonoBehaviour)myPlayer.GetComponent("FirstPersonController")).enabled = true;
         myPlayer.GetPhotonView().owner.NickName = "Player" + myPlayer.GetPhotonView().ownerId;
+        players.Add(myPlayer);
     }
 }

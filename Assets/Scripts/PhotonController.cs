@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class PhotonController : MonoBehaviour
 {
-	[SerializeField] SpawnController spawnController;
     private const string ROOM_NAME = "RoomA";
+
+    public bool _startSpawn;
 
     void Awake()
     {
@@ -27,6 +28,6 @@ public class PhotonController : MonoBehaviour
     void OnJoinedRoom()
     {
         Debug.Log("JoinedRoom");
-        spawnController.spawn = true;
+        _startSpawn = true;
     }
 }

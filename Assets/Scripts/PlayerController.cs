@@ -5,21 +5,21 @@ using UnityEngine;
 public class PlayerController : Photon.MonoBehaviour {
 
 	public int _playerHP = 5;
-	private SpawnController spawnController;
 
 	private PhotonView view;
 
 	private bool _dead;
 
+	public bool _startRespawn;
+
 	void Start()
 	{
-		spawnController = GameObject.FindGameObjectWithTag("SpawnManager").GetComponent<SpawnController>();
 		view  = this.gameObject.GetPhotonView();
 	}
 
 	void Update()
 	{
-		if(_dead) 
+		if(_dead)
 		{
 			DeadPlayer();
 			print("やられた" + view.ownerId);
@@ -38,12 +38,13 @@ public class PlayerController : Photon.MonoBehaviour {
 	
 	private void DeadPlayer()
 	{
-		if(!view.isMine) return;
+		if(!view.isMine) return; 
+
+		_startRespawn = true;
+		_dead = false;
+
 
 		PhotonNetwork.Destroy(this.gameObject);
-
-		spawnController.respawn = true;
-		_dead = false;
 	}
 
 	void OnPhotonSerializeView(PhotonStream stream,PhotonMessageInfo info)
@@ -58,4 +59,3 @@ public class PlayerController : Photon.MonoBehaviour {
 		}
 	}
 }
-

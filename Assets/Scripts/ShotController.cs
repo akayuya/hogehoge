@@ -139,5 +139,5 @@ public class ShotController : Photon.MonoBehaviour
     {
         PhotonNetwork.Instantiate("shotEffect",this.transform.position, Quaternion.identity,0);
         PhotonNetwork.Instantiate("shotReachEffect", hitObjPosition, Quaternion.identity,0);
-    }    
+    } 
 }
