@@ -1,15 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityStandardAssets.Characters.FirstPerson;
 
 public class SpawnController : MonoBehaviour
 {
     [SerializeField] GameObject player;
-
     public List<GameObject> players = new List<GameObject>();
 
     public bool _spawn;
 
+    void Start()
+    {
+        players = new List<GameObject>();
+    }
     void Update()
     {
         if(_spawn)
@@ -26,7 +30,7 @@ public class SpawnController : MonoBehaviour
         GameObject myPlayer = PhotonNetwork.Instantiate(player.name, playerStartPos, Quaternion.identity, 0);
 
         myPlayer.transform.Find("FirstPersonCharacter").gameObject.SetActive(true);
-        ((MonoBehaviour)myPlayer.GetComponent("FirstPersonController")).enabled = true;
+        ((MonoBehaviour)myPlayer.GetComponent<FirstPersonController>()).enabled = true;
         myPlayer.GetPhotonView().owner.NickName = "Player" + myPlayer.GetPhotonView().ownerId;
         players.Add(myPlayer);
     }

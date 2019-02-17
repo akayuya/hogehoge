@@ -73,7 +73,6 @@ public class ShotController : Photon.MonoBehaviour
         {
             Vector3 hitObjPosition = hitRay.point;
             Collider hitObjCollider = hitRay.collider;
-            print(hitObjCollider);
             TargetController targetController = hitObjCollider.gameObject.GetComponent<TargetController>();
 
             ShotEffect(hitObjPosition);

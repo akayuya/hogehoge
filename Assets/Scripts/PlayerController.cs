@@ -8,43 +8,30 @@ public class PlayerController : Photon.MonoBehaviour {
 
 	private PhotonView view;
 
-	private bool _dead;
+	public bool _dead;
 
-	public bool _startRespawn;
 
 	void Start()
 	{
 		view  = this.gameObject.GetPhotonView();
 	}
 
-	void Update()
-	{
-		if(_dead)
-		{
-			DeadPlayer();
-			print("やられた" + view.ownerId);
-		}
-	}
-
 	[PunRPC]
 	public void HitPlayer()
 	{
-		print("HitPlayerがよばれた");
+		print(this.gameObject.GetPhotonView().owner.NickName + "がうたれた");
 		_playerHP--;
-		print("HitPlayerHP" + _playerHP);
+		print(this.gameObject.GetPhotonView().owner.NickName + "の残りHP" + _playerHP);
 
 		if(_playerHP == 0) _dead = true;
 	}
 	
-	private void DeadPlayer()
+	public void DeadPlayer()
 	{
 		if(!view.isMine) return; 
 
-		_startRespawn = true;
-		_dead = false;
-
-
 		PhotonNetwork.Destroy(this.gameObject);
+		_dead = false;
 	}
 
 	void OnPhotonSerializeView(PhotonStream stream,PhotonMessageInfo info)
