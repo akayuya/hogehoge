@@ -29,9 +29,22 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if(photonController._startSpawn) StartSpawn();
+        if(photonController._startSpawn) 
+        {
+            spawnController._spawn = true;
+            photonController._startSpawn = false;
+        }
 
-        if(playerController._dead) StartRespawn();
+        if(playerController == null) GetPlayerController();
+        
+        if(shotController == null) shotController = GetPlayerController().transform.GetComponentInChildren<ShotController>();
+
+        if(playerController._dead)
+        {
+            spawnController.players.Remove(playerController.gameObject);
+            spawnController._spawn = true;
+            playerController._dead = false;
+        } 
 
         _timeLimit = TIME_LIMIT - Time.time;
         uiManager.UpdateText(_timeLimit, scoreController._score, shotController._bulletBox, shotController._bullet, BULLET_STOCK_FIRST,playerController._playerHP);
@@ -54,27 +67,5 @@ public class GameManager : MonoBehaviour
             }
         }
         return playerController;
-    }
-
-    private void GetShotController()
-    {
-        shotController = GetPlayerController().transform.GetComponentInChildren<ShotController>();
-    }
-
-    private void  StartSpawn()
-    {
-        spawnController.SpawnPlayer();
-        photonController._startSpawn = false;
-        GetPlayerController();
-        GetShotController();
-    }
-
-    private void StartRespawn()
-    {
-        playerController.DeadPlayer();
-        spawnController.players.Remove(playerController.gameObject);
-        spawnController.SpawnPlayer();
-        GetPlayerController();
-        GetShotController();
     }
 }

@@ -14,6 +14,7 @@ public class SpawnController : MonoBehaviour
     {
         players = new List<GameObject>();
     }
+    
     void Update()
     {
         if(_spawn)

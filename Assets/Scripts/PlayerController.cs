@@ -23,7 +23,11 @@ public class PlayerController : Photon.MonoBehaviour {
 		_playerHP--;
 		print(this.gameObject.GetPhotonView().owner.NickName + "の残りHP" + _playerHP);
 
-		if(_playerHP == 0) _dead = true;
+		if(_playerHP == 0) 
+		{
+			DeadPlayer();
+			_dead = true;
+		}	
 	}
 	
 	public void DeadPlayer()
