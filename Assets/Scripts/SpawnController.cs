@@ -6,20 +6,22 @@ using UnityStandardAssets.Characters.FirstPerson;
 public class SpawnController : MonoBehaviour
 {
     [SerializeField] GameObject player;
-    public List<GameObject> players = new List<GameObject>();
+
+    public PlayerController playerController;
+
+    public ShotController shotController;
+
+    private GameObject myPlayer;
 
     public bool _spawn;
 
-    void Start()
-    {
-        players = new List<GameObject>();
-    }
-    
     void Update()
     {
         if(_spawn)
         {
-            SpawnPlayer();
+             SpawnPlayer();
+             playerController = myPlayer.gameObject.GetComponent<PlayerController>();
+             shotController = myPlayer.gameObject.GetComponentInChildren<ShotController>();
             _spawn = false;
         }
     }
@@ -28,11 +30,10 @@ public class SpawnController : MonoBehaviour
     {
         Vector3 playerStartPos = new Vector3(3f, 1f, 3f);
 
-        GameObject myPlayer = PhotonNetwork.Instantiate(player.name, playerStartPos, Quaternion.identity, 0);
+        myPlayer = PhotonNetwork.Instantiate(player.name, playerStartPos, Quaternion.identity, 0);
 
         myPlayer.transform.Find("FirstPersonCharacter").gameObject.SetActive(true);
         ((MonoBehaviour)myPlayer.GetComponent<FirstPersonController>()).enabled = true;
         myPlayer.GetPhotonView().owner.NickName = "Player" + myPlayer.GetPhotonView().ownerId;
-        players.Add(myPlayer);
     }
 }
