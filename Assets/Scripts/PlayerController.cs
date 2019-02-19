@@ -9,7 +9,7 @@ public class PlayerController : Photon.MonoBehaviour {
 	private PhotonView view;
 
 	public bool _dead;
-	
+
 	void Start()
 	{
 		view  = this.gameObject.GetPhotonView();
@@ -32,7 +32,7 @@ public class PlayerController : Photon.MonoBehaviour {
 	public void DeadPlayer()
 	{
 		if(!view.isMine) return; 
-
+		this.gameObject.GetComponentInChildren<ShotController>().scopeImage.gameObject.SetActive(true);
 		PhotonNetwork.Destroy(this.gameObject);
 		_dead = false;
 	}

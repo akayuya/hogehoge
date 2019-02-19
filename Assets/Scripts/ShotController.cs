@@ -19,7 +19,7 @@ public class ShotController : Photon.MonoBehaviour
     private const int RELOAD_BORDER_TIME = 2;
     private const float SHOT_BORDER_TIME = 0.5f;
 
-    [SerializeField] private Image scopeImage;
+    public Image scopeImage;
     private bool _snipeMode;
     private const int ZOOM_IN_SCOPE = 20;
     private const int ZOOM_OUT_SCOPE = 60;
