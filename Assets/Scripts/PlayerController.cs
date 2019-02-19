@@ -9,8 +9,7 @@ public class PlayerController : Photon.MonoBehaviour {
 	private PhotonView view;
 
 	public bool _dead;
-
-
+	
 	void Start()
 	{
 		view  = this.gameObject.GetPhotonView();

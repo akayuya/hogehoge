@@ -20,8 +20,6 @@ public class SpawnController : MonoBehaviour
         if(_spawn)
         {
              SpawnPlayer();
-             playerController = myPlayer.gameObject.GetComponent<PlayerController>();
-             shotController = myPlayer.gameObject.GetComponentInChildren<ShotController>();
             _spawn = false;
         }
     }
@@ -34,6 +32,9 @@ public class SpawnController : MonoBehaviour
 
         myPlayer.transform.Find("FirstPersonCharacter").gameObject.SetActive(true);
         ((MonoBehaviour)myPlayer.GetComponent<FirstPersonController>()).enabled = true;
+
         myPlayer.GetPhotonView().owner.NickName = "Player" + myPlayer.GetPhotonView().ownerId;
+        
+        playerController = myPlayer.gameObject.GetComponent<PlayerController>();
     }
 }

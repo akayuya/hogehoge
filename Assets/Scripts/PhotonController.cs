@@ -8,6 +8,8 @@ public class PhotonController : MonoBehaviour
 
     public bool _startSpawn;
 
+    public bool _joined;
+
     void Awake()
     {
         PhotonNetwork.ConnectUsingSettings(null);
@@ -29,5 +31,6 @@ public class PhotonController : MonoBehaviour
     {
         Debug.Log("JoinedRoom");
         _startSpawn = true;
+        _joined = true;
     }
 }

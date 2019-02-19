@@ -13,7 +13,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] BoxCollider headMarkerBoxCollider;
     private Vector3 headMarkerCenter;
 
-
     private float _timeLimit;
     private const int TIME_LIMIT = 90;
     private const int BULLET_STOCK_FIRST = 30;
@@ -26,10 +25,16 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        if(!photonController._joined) return;
+        
         StartSpawnPlayer();
         
         _timeLimit = TIME_LIMIT - Time.time;
-        uiManager.UpdateText(_timeLimit, scoreController._score, spawnController.shotController._bulletBox, spawnController.shotController._bullet, BULLET_STOCK_FIRST,spawnController.playerController._playerHP);
+
+        if(spawnController.playerController != null)
+        {
+            uiManager.UpdateText(_timeLimit, scoreController._score, spawnController.playerController.gameObject.GetComponentInChildren<ShotController>()._bulletBox, spawnController.playerController.gameObject.GetComponentInChildren<ShotController>()._bullet, BULLET_STOCK_FIRST,spawnController.playerController._playerHP);
+        }
 
         if (targetController._hitHeadMarker)
         {
@@ -46,7 +51,7 @@ public class GameManager : MonoBehaviour
             photonController._startSpawn = false;
         }
 
-        if(spawnController.playerController._dead)
+        else if(spawnController.playerController._dead)
         {
             spawnController._spawn = true;
             spawnController.playerController._dead = false;
