@@ -8,7 +8,6 @@ public class SpawnController : MonoBehaviour
     [SerializeField] GameObject player;
 
     public PlayerController playerController;
-    public ShotController shotController;
     private GameObject myPlayer;
 
     public void SpawnPlayer()
