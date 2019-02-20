@@ -26,35 +26,27 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         if(!photonController._joined) return;
-        
-        StartSpawnPlayer();
-        
-        _timeLimit = TIME_LIMIT - Time.time;
 
-        if(spawnController.playerController != null)
+        if(!spawnController._spawn)
         {
-            uiManager.UpdateText(_timeLimit, scoreController._score, spawnController.playerController.gameObject.GetComponentInChildren<ShotController>()._bulletBox, spawnController.playerController.gameObject.GetComponentInChildren<ShotController>()._bullet, BULLET_STOCK_FIRST,spawnController.playerController._playerHP);
+            spawnController.SpawnPlayer();
         }
+
+        if(spawnController.playerController._playerHP == 0)
+        {
+            spawnController.playerController.DeadPlayer();
+            spawnController.SpawnPlayer();
+        }
+
+        if(spawnController.playerController == null) return;     
+
+        uiManager.UpdateText(_timeLimit, scoreController._score, spawnController.playerController.gameObject.GetComponentInChildren<ShotController>()._bulletBox, spawnController.playerController.gameObject.GetComponentInChildren<ShotController>()._bullet, BULLET_STOCK_FIRST,spawnController.playerController._playerHP);
+        _timeLimit = TIME_LIMIT - Time.time;
 
         if (targetController._hitHeadMarker)
         {
             scoreController.CalcScore(headMarkerCenter, targetController.hitPosition);
             targetController._hitHeadMarker = false;
         }
-    }
-
-    private void StartSpawnPlayer()
-    {
-        if(photonController._startSpawn) 
-        {
-            spawnController._spawn = true;
-            photonController._startSpawn = false;
-        }
-
-        else if(spawnController.playerController._dead)
-        {
-            spawnController._spawn = true;
-            spawnController.playerController._dead = false;
-        } 
     }
 }
