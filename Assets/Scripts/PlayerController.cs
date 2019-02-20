@@ -19,6 +19,8 @@ public class PlayerController : Photon.MonoBehaviour {
 		print(this.gameObject.GetPhotonView().owner.NickName + "がうたれた");
 		_playerHP--;
 		print(this.gameObject.GetPhotonView().owner.NickName + "の残りHP" + _playerHP);
+		
+		if(_playerHP == 0) DeadPlayer();
 	}
 	
 	public void DeadPlayer()

@@ -11,12 +11,8 @@ public class SpawnController : MonoBehaviour
     public ShotController shotController;
     private GameObject myPlayer;
 
-    public bool _spawn;
-
     public void SpawnPlayer()
     {
-        if(!_spawn) _spawn = true;
-
         Vector3 playerStartPos = new Vector3(3f, 1f, 3f);
 
         myPlayer = PhotonNetwork.Instantiate(player.name, playerStartPos, Quaternion.identity, 0);

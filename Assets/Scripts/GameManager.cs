@@ -25,17 +25,12 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if(photonController._joined && !spawnController._spawn)
+        if(!photonController._joined) return;
+
+        if(spawnController.playerController == null) 
         {
             spawnController.SpawnPlayer();
-        }
-
-        if(spawnController.playerController == null) return;     
-
-        if(spawnController.playerController._playerHP == 0)
-        {
-            spawnController.playerController.DeadPlayer();
-            spawnController.SpawnPlayer();
+            return;
         }
 
         _timeLimit = TIME_LIMIT - Time.time;
