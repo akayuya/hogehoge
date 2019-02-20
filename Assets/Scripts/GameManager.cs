@@ -25,12 +25,12 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if(!photonController._joined) return;
-
-        if(!spawnController._spawn)
+        if(photonController._joined && !spawnController._spawn)
         {
             spawnController.SpawnPlayer();
         }
+
+        if(spawnController.playerController == null) return;     
 
         if(spawnController.playerController._playerHP == 0)
         {
@@ -38,10 +38,8 @@ public class GameManager : MonoBehaviour
             spawnController.SpawnPlayer();
         }
 
-        if(spawnController.playerController == null) return;     
-
-        uiManager.UpdateText(_timeLimit, scoreController._score, spawnController.playerController.gameObject.GetComponentInChildren<ShotController>()._bulletBox, spawnController.playerController.gameObject.GetComponentInChildren<ShotController>()._bullet, BULLET_STOCK_FIRST,spawnController.playerController._playerHP);
         _timeLimit = TIME_LIMIT - Time.time;
+        uiManager.UpdateText(_timeLimit, scoreController._score, spawnController.playerController.gameObject.GetComponentInChildren<ShotController>()._bulletBox, spawnController.playerController.gameObject.GetComponentInChildren<ShotController>()._bullet, BULLET_STOCK_FIRST,spawnController.playerController._playerHP);
 
         if (targetController._hitHeadMarker)
         {
