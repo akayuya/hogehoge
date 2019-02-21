@@ -837,6 +837,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerHP: 5
+  shotController: {fileID: 0}
+  view: {fileID: 0}
 --- !u!114 &114488308947303358
 MonoBehaviour:
   m_ObjectHideFlags: 1

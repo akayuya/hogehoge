@@ -90,7 +90,7 @@ public class ShotController : Photon.MonoBehaviour
 
             if(hitObjCollider.gameObject.tag == "Player")
             {
-                hitObjCollider.gameObject.GetPhotonView().RPC("HitPlayer",PhotonTargets.All);
+                hitObjCollider.gameObject.GetPhotonView().RPC("HitPlayer",PhotonTargets.All); 
             }
         }
     }
@@ -138,5 +138,5 @@ public class ShotController : Photon.MonoBehaviour
     {
         PhotonNetwork.Instantiate("shotEffect",this.transform.position, Quaternion.identity,0);
         PhotonNetwork.Instantiate("shotReachEffect", hitObjPosition, Quaternion.identity,0);
-    } 
+    }
 }
