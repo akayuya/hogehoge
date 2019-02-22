@@ -18,6 +18,7 @@ public class ShotController : Photon.MonoBehaviour
     public int GetBullet {get {return _bullet;}}
 
     private const int BULLET_STOCK_FULL = 30;
+    private const int BULLET_BOX_FULL = 150;
     private float shotInterval;
     private float reloadInterval;
     private const int RELOAD_BORDER_TIME = 2;
@@ -31,12 +32,16 @@ public class ShotController : Photon.MonoBehaviour
 
     void Start()
     {
+        _bullet = BULLET_STOCK_FULL;
+        _bulletBox = BULLET_BOX_FULL;
+
         shotEffect = Resources.Load<GameObject>("Effects/ShotEffect");
         shotReachEffect = Resources.Load<GameObject>("Effects/ShotReachEffect");
         gunAudioSource = GetComponent<AudioSource>();
 
         scopeImage = GameObject.FindGameObjectWithTag("SnipeImage").GetComponent<Image>();
-        SwitchScopeImage();
+        print(scopeImage);
+        SwitchScopeInactive();
     }
 
     void Update()
@@ -127,26 +132,14 @@ public class ShotController : Photon.MonoBehaviour
         if (!_snipeMode)
         {
             Camera.main.fieldOfView = ZOOM_IN_SCOPE;
-            SwitchScopeImage();
+            SwitchScopeActive();
             _snipeMode = true;
         }
         else
         {
             Camera.main.fieldOfView = ZOOM_OUT_SCOPE;
-            SwitchScopeImage();
+            SwitchScopeInactive();
             _snipeMode = false;
-        }
-    }
-
-    public void SwitchScopeImage()
-    {
-        if(scopeImage.gameObject == true)
-        {
-            scopeImage.gameObject.SetActive(false);
-        }
-        else
-        {
-            scopeImage.gameObject.SetActive(true);
         }
     }
 
@@ -154,5 +147,15 @@ public class ShotController : Photon.MonoBehaviour
     {
         PhotonNetwork.Instantiate("shotEffect",this.transform.position, Quaternion.identity,0);
         PhotonNetwork.Instantiate("shotReachEffect", hitObjPosition, Quaternion.identity,0);
+    }
+
+    public void SwitchScopeActive()
+    {
+        scopeImage.gameObject.SetActive(true);
+    }
+
+    private void SwitchScopeInactive()
+    {
+        scopeImage.gameObject.SetActive(false);
     }
 }

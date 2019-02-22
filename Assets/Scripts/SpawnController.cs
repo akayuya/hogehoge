@@ -36,7 +36,7 @@ public class SpawnController : MonoBehaviour
     {
         if(!playerController.GetView.isMine) return;
 
-		playerController.gameObject.GetComponentInChildren<ShotController>().SwitchScopeImage();
+		playerController.gameObject.GetComponentInChildren<ShotController>().SwitchScopeActive();
 		PhotonNetwork.Destroy(playerController.gameObject);
     }
 }

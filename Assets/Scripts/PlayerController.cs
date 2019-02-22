@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerController : Photon.MonoBehaviour {
 
-	private int _playerHP ;
+	private int _playerHP = 5;
 	public int GetPlayerHP {get {return _playerHP;}}
 
 	private ShotController shotController;
