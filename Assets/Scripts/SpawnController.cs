@@ -6,15 +6,16 @@ using UnityStandardAssets.Characters.FirstPerson;
 public class SpawnController : MonoBehaviour
 {
     [SerializeField] GameObject player;
-
-    public PlayerController playerController;
     private GameObject myPlayer;
+
+    private PlayerController playerController;
+    public PlayerController GetPlayerController {get {return playerController;}}
 
     void Update()
     {
         if(playerController == null) return;
 
-        if(playerController._playerHP == 0) DeadPlayer();
+        if(playerController.GetPlayerHP == 0) DeadPlayer();
     }
 
     public void SpawnPlayer()
@@ -33,9 +34,9 @@ public class SpawnController : MonoBehaviour
 
     private void DeadPlayer()
     {
-        if(!playerController.view.isMine) return;
+        if(!playerController.GetView.isMine) return;
 
-		playerController.gameObject.GetComponentInChildren<ShotController>().scopeImage.gameObject.SetActive(true);
+		playerController.gameObject.GetComponentInChildren<ShotController>().SwitchScopeImage();
 		PhotonNetwork.Destroy(playerController.gameObject);
     }
 }

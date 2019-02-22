@@ -11,15 +11,19 @@ public class ShotController : Photon.MonoBehaviour
     private GameObject shotEffect;
     private GameObject shotReachEffect;
 
-    public int _bulletBox;
-    public int _bullet;
+    private int _bulletBox;
+    public int GetBulletBox{get {return _bulletBox;}}
+
+    private int _bullet;
+    public int GetBullet {get {return _bullet;}}
+
     private const int BULLET_STOCK_FULL = 30;
     private float shotInterval;
     private float reloadInterval;
     private const int RELOAD_BORDER_TIME = 2;
     private const float SHOT_BORDER_TIME = 0.5f;
 
-    public Image scopeImage;
+    private Image scopeImage;
     private bool _snipeMode;
     private const int ZOOM_IN_SCOPE = 20;
     private const int ZOOM_OUT_SCOPE = 60;
@@ -32,7 +36,7 @@ public class ShotController : Photon.MonoBehaviour
         gunAudioSource = GetComponent<AudioSource>();
 
         scopeImage = GameObject.FindGameObjectWithTag("SnipeImage").GetComponent<Image>();
-        scopeImage.gameObject.SetActive(false);
+        SwitchScopeImage();
     }
 
     void Update()
@@ -123,14 +127,26 @@ public class ShotController : Photon.MonoBehaviour
         if (!_snipeMode)
         {
             Camera.main.fieldOfView = ZOOM_IN_SCOPE;
-            scopeImage.gameObject.SetActive(true);
+            SwitchScopeImage();
             _snipeMode = true;
         }
         else
         {
             Camera.main.fieldOfView = ZOOM_OUT_SCOPE;
-            scopeImage.gameObject.SetActive(false);
+            SwitchScopeImage();
             _snipeMode = false;
+        }
+    }
+
+    public void SwitchScopeImage()
+    {
+        if(scopeImage.gameObject == true)
+        {
+            scopeImage.gameObject.SetActive(false);
+        }
+        else
+        {
+            scopeImage.gameObject.SetActive(true);
         }
     }
 

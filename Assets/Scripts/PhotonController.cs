@@ -6,7 +6,8 @@ public class PhotonController : MonoBehaviour
 {
     private const string ROOM_NAME = "RoomA";
 
-    public bool _joined;
+    public bool _joined {get; private set;}
+    public bool Joined {get {return _joined;}}
 
     void Awake()
     {
@@ -28,7 +29,7 @@ public class PhotonController : MonoBehaviour
     void OnJoinedRoom()
     {
         Debug.Log("JoinedRoom");
-        
+
         _joined = true;
     }
 }

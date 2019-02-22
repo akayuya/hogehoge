@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class PlayerController : Photon.MonoBehaviour {
 
-	public int _playerHP = 5;
+	private int _playerHP ;
+	public int GetPlayerHP {get {return _playerHP;}}
 
-	public ShotController shotController;
+	private ShotController shotController;
+	public ShotController GetShotController {get {return shotController;}}
 
-	public PhotonView view;
+	private PhotonView view;
+	public PhotonView GetView { get {return view;}}
 
 	void Start()
 	{
