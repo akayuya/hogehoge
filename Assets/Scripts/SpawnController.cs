@@ -28,14 +28,13 @@ public class SpawnController : MonoBehaviour
         myPlayer.transform.Find("FirstPersonCharacter").gameObject.SetActive(true);
         ((MonoBehaviour)myPlayer.GetComponent<FirstPersonController>()).enabled = true;
 
-        myPlayer.GetPhotonView().owner.NickName = "Player" + myPlayer.GetPhotonView().ownerId;
-
         PlayerController = myPlayer.gameObject.GetComponent<PlayerController>();
+
+        PlayerController.View.owner.NickName = "Player" + PlayerController.View.ownerId;
     }
 
     private void DeadPlayer()
     {
-        print(PlayerController.View.isMine);
         if(!PlayerController.View.isMine) return;
 
 		PhotonNetwork.Destroy(PlayerController.gameObject);
