@@ -6,8 +6,7 @@ public class PlayerController : Photon.MonoBehaviour {
 
 	public int PlayerHP {get; private set;}
 
-	private ShotController shotController;
-	public ShotController GetShotController {get {return shotController;}}
+	public ShotController ShotController {get; private set;}
 
 	public PhotonView View { get; private set;}
 
@@ -20,7 +19,7 @@ public class PlayerController : Photon.MonoBehaviour {
 
 	void Start()
 	{
-		shotController = this.gameObject.GetComponentInChildren<ShotController>();
+		ShotController = this.gameObject.GetComponentInChildren<ShotController>();
 	}
 
 	[PunRPC]

@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
         }
 
         _timeLimit = TIME_LIMIT - Time.time;
-        uiManager.UpdateText(_timeLimit, scoreController._score, spawnController.PlayerController.GetShotController.BulletBox, spawnController.PlayerController.GetShotController.Bullet, BULLET_STOCK_FIRST,spawnController.PlayerController.PlayerHP);
+        uiManager.UpdateText(_timeLimit, scoreController._score, spawnController.PlayerController.ShotController.BulletBox, spawnController.PlayerController.ShotController.Bullet, BULLET_STOCK_FIRST,spawnController.PlayerController.PlayerHP);
 
         if (targetController.HasHitHeadMarker)
         {
