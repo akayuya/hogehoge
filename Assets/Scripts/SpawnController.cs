@@ -14,6 +14,8 @@ public class SpawnController : MonoBehaviour
     {
         if(PlayerController == null) return;
 
+        print(PlayerController.PlayerHP);
+        print(PlayerController.View.isMine);
         if(PlayerController.PlayerHP == 0) DeadPlayer();
     }
 
@@ -33,9 +35,9 @@ public class SpawnController : MonoBehaviour
 
     private void DeadPlayer()
     {
+        print(PlayerController.View.isMine);
         if(!PlayerController.View.isMine) return;
 
-		PlayerController.gameObject.GetComponentInChildren<ShotController>().SwitchScopeActive();
 		PhotonNetwork.Destroy(PlayerController.gameObject);
     }
 }

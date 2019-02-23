@@ -35,8 +35,6 @@ public class ShotController : Photon.MonoBehaviour
         gunAudioSource = GetComponent<AudioSource>();
 
         scopeImage = GameObject.FindGameObjectWithTag("SnipeImage").GetComponent<Image>();
-        print(scopeImage);
-        SwitchScopeInactive();
     }
 
     void Update()
@@ -146,11 +144,11 @@ public class ShotController : Photon.MonoBehaviour
 
     public void SwitchScopeActive()
     {
-        scopeImage.gameObject.SetActive(true);
+        scopeImage.enabled = true;
     }
 
     private void SwitchScopeInactive()
     {
-        scopeImage.gameObject.SetActive(false);
+        scopeImage.enabled = false;
     }
 }

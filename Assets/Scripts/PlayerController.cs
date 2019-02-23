@@ -12,10 +12,14 @@ public class PlayerController : Photon.MonoBehaviour {
 	public PhotonView View { get; private set;}
 
 
-	void Start()
+	void Awake()
 	{
 		PlayerHP = 5;  //Playerの初期HPを設定。
-		View  = this.gameObject.GetPhotonView();
+		View  = this.gameObject.GetPhotonView();		
+	}
+
+	void Start()
+	{
 		shotController = this.gameObject.GetComponentInChildren<ShotController>();
 	}
 
