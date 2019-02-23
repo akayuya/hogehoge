@@ -8,14 +8,13 @@ public class SpawnController : MonoBehaviour
     [SerializeField] GameObject player;
     private GameObject myPlayer;
 
-    private PlayerController playerController;
-    public PlayerController GetPlayerController {get {return playerController;}}
+    public PlayerController PlayerController {get ; private set;}
 
     void Update()
     {
-        if(playerController == null) return;
+        if(PlayerController == null) return;
 
-        if(playerController.GetPlayerHP == 0) DeadPlayer();
+        if(PlayerController.PlayerHP == 0) DeadPlayer();
     }
 
     public void SpawnPlayer()
@@ -29,14 +28,14 @@ public class SpawnController : MonoBehaviour
 
         myPlayer.GetPhotonView().owner.NickName = "Player" + myPlayer.GetPhotonView().ownerId;
 
-        playerController = myPlayer.gameObject.GetComponent<PlayerController>();
+        PlayerController = myPlayer.gameObject.GetComponent<PlayerController>();
     }
 
     private void DeadPlayer()
     {
-        if(!playerController.GetView.isMine) return;
+        if(!PlayerController.View.isMine) return;
 
-		playerController.gameObject.GetComponentInChildren<ShotController>().SwitchScopeActive();
-		PhotonNetwork.Destroy(playerController.gameObject);
+		PlayerController.gameObject.GetComponentInChildren<ShotController>().SwitchScopeActive();
+		PhotonNetwork.Destroy(PlayerController.gameObject);
     }
 }

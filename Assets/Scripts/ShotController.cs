@@ -11,18 +11,14 @@ public class ShotController : Photon.MonoBehaviour
     private GameObject shotEffect;
     private GameObject shotReachEffect;
 
-    private int _bulletBox;
-    public int GetBulletBox{get {return _bulletBox;}}
+    public int BulletBox{get; private set;}
+    public int Bullet {get; private set;}
 
-    private int _bullet;
-    public int GetBullet {get {return _bullet;}}
-
-    private const int BULLET_STOCK_FULL = 30;
-    private const int BULLET_BOX_FULL = 150;
     private float shotInterval;
     private float reloadInterval;
     private const int RELOAD_BORDER_TIME = 2;
     private const float SHOT_BORDER_TIME = 0.5f;
+    private const int BULLET_STOCK_FULL = 30;
 
     private Image scopeImage;
     private bool _snipeMode;
@@ -32,9 +28,8 @@ public class ShotController : Photon.MonoBehaviour
 
     void Start()
     {
-        _bullet = BULLET_STOCK_FULL;
-        _bulletBox = BULLET_BOX_FULL;
-
+        Bullet = 30; //初期弾数の設定。
+        BulletBox = BULLET_STOCK_FULL; //弾倉の弾数の設定。
         shotEffect = Resources.Load<GameObject>("Effects/ShotEffect");
         shotReachEffect = Resources.Load<GameObject>("Effects/ShotReachEffect");
         gunAudioSource = GetComponent<AudioSource>();
@@ -69,9 +64,9 @@ public class ShotController : Photon.MonoBehaviour
 
         if (reloadInterval < RELOAD_BORDER_TIME) return;
 
-        if (_bullet <= 0) return;
+        if (Bullet <= 0) return;
 
-        _bullet -= 1;
+        Bullet -= 1;
         shotInterval = 0;
         gunAudioSource.PlayOneShot(shotSound);
 
@@ -106,23 +101,23 @@ public class ShotController : Photon.MonoBehaviour
 
     private void ReloadBullet()
     {
-        if (_bulletBox == 0) return;
+        if (BulletBox == 0) return;
 
         if (shotInterval < SHOT_BORDER_TIME) return;
 
         if (reloadInterval < RELOAD_BORDER_TIME) return;
 
-        if (_bullet >= BULLET_STOCK_FULL) return;
+        if (Bullet >= BULLET_STOCK_FULL) return;
 
         reloadInterval = 0;
         gunAudioSource.PlayOneShot(reloadSound);
 
-        for (int i = 1; _bullet < BULLET_STOCK_FULL; ++i)
+        for (int i = 1; Bullet < BULLET_STOCK_FULL; ++i)
         {
-            if (_bulletBox > 0)
+            if (BulletBox > 0)
             {
-                _bullet += 1;
-                _bulletBox -= 1;
+                Bullet += 1;
+                BulletBox -= 1;
             }
         }
     }

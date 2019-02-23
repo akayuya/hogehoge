@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class PlayerController : Photon.MonoBehaviour {
 
-	private int _playerHP = 5;
-	public int GetPlayerHP {get {return _playerHP;}}
+	public int PlayerHP {get; private set;}
 
 	private ShotController shotController;
 	public ShotController GetShotController {get {return shotController;}}
 
-	private PhotonView view;
-	public PhotonView GetView { get {return view;}}
+	public PhotonView View { get; private set;}
+
 
 	void Start()
 	{
-		view  = this.gameObject.GetPhotonView();
+		PlayerHP = 5;  //Playerの初期HPを設定。
+		View  = this.gameObject.GetPhotonView();
 		shotController = this.gameObject.GetComponentInChildren<ShotController>();
 	}
 
@@ -23,19 +23,19 @@ public class PlayerController : Photon.MonoBehaviour {
 	public void HitPlayer()
 	{
 		print(this.gameObject.GetPhotonView().owner.NickName + "がうたれた");
-		_playerHP--;
-		print(this.gameObject.GetPhotonView().owner.NickName + "の残りHP" + _playerHP);
+		PlayerHP--;
+		print(this.gameObject.GetPhotonView().owner.NickName + "の残りHP" + PlayerHP);
 	}
 	
 	void OnPhotonSerializeView(PhotonStream stream,PhotonMessageInfo info)
 	{
 		if(stream.isWriting)
 		{
-			stream.SendNext(_playerHP);
+			stream.SendNext(PlayerHP);
 		}
 		else
 		{
-			_playerHP = (int)stream.ReceiveNext();
+			PlayerHP = (int)stream.ReceiveNext();
 		}
 	}
 }

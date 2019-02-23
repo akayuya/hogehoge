@@ -27,18 +27,18 @@ public class GameManager : MonoBehaviour
     {
         if(!photonController.Joined) return;
 
-        if(spawnController.GetPlayerController == null) 
+        if(spawnController.PlayerController == null) 
         {
             spawnController.SpawnPlayer();
             return;
         }
 
         _timeLimit = TIME_LIMIT - Time.time;
-        uiManager.UpdateText(_timeLimit, scoreController._score, spawnController.GetPlayerController.GetShotController.GetBulletBox, spawnController.GetPlayerController.GetShotController.GetBullet, BULLET_STOCK_FIRST,spawnController.GetPlayerController.GetPlayerHP);
+        uiManager.UpdateText(_timeLimit, scoreController._score, spawnController.PlayerController.GetShotController.BulletBox, spawnController.PlayerController.GetShotController.Bullet, BULLET_STOCK_FIRST,spawnController.PlayerController.PlayerHP);
 
         if (targetController.HasHitHeadMarker)
         {
-            scoreController.CalcScore(headMarkerCenter, targetController.GetHitPosition);
+            scoreController.CalcScore(headMarkerCenter, targetController.HitPosition);
             targetController.HasHitHeadMarker = false;
         }
     }

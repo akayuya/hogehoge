@@ -6,17 +6,10 @@ public class TargetController : MonoBehaviour
 {
     [SerializeField] Animator targetMotion;
 
-    private bool _hitHeadMarker;
-    public bool HasHitHeadMarker
-    { 
-        get {return _hitHeadMarker;}
+    public bool HasHitHeadMarker {get; set;}
 
-        set {_hitHeadMarker = value;}
-    }
+    public Vector3 HitPosition {get; private set;}
 
-    private Vector3 hitPosition;
-    public Vector3 GetHitPosition {get {return hitPosition;}}
-    
     private bool _isDead;
 
     private const int END_REVIVE_MOTION_INTERVAL = 5;
@@ -69,7 +62,7 @@ public class TargetController : MonoBehaviour
     {
         if (_isDead) return;
 
-        hitPosition = hitPos;
-        _hitHeadMarker = true;
+        HitPosition = hitPos;
+        HasHitHeadMarker = true;
     }
 }
