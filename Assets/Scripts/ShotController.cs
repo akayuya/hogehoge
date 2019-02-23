@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ShotController : MonoBehaviour
+public class ShotController : Photon.MonoBehaviour
 {
     [SerializeField] private AudioClip shotSound;
     [SerializeField] private AudioClip reloadSound;
@@ -11,26 +11,30 @@ public class ShotController : MonoBehaviour
     private GameObject shotEffect;
     private GameObject shotReachEffect;
 
+    public int BulletBox{get; private set;}
+    public int Bullet {get; private set;}
 
-    public int _bulletBox;
-    public int _bullet;
-    private const int BULLET_STOCK_FULL = 30;
     private float shotInterval;
     private float reloadInterval;
     private const int RELOAD_BORDER_TIME = 2;
     private const float SHOT_BORDER_TIME = 0.5f;
+    private const int BULLET_STOCK_FULL = 30;
 
-
-    [SerializeField] private Image scopeImage;
+    private Image scopeImage;
     private bool _snipeMode;
     private const int ZOOM_IN_SCOPE = 20;
     private const int ZOOM_OUT_SCOPE = 60;
 
+
     void Start()
     {
+        Bullet = 30; //初期弾数の設定。
+        BulletBox = BULLET_STOCK_FULL; //弾倉の弾数の設定。
         shotEffect = Resources.Load<GameObject>("Effects/ShotEffect");
         shotReachEffect = Resources.Load<GameObject>("Effects/ShotReachEffect");
         gunAudioSource = GetComponent<AudioSource>();
+
+        scopeImage = GameObject.FindGameObjectWithTag("SnipeImage").GetComponent<Image>();
     }
 
     void Update()
@@ -58,9 +62,9 @@ public class ShotController : MonoBehaviour
 
         if (reloadInterval < RELOAD_BORDER_TIME) return;
 
-        if (_bullet <= 0) return;
+        if (Bullet <= 0) return;
 
-        _bullet -= 1;
+        Bullet -= 1;
         shotInterval = 0;
         gunAudioSource.PlayOneShot(shotSound);
 
@@ -73,41 +77,45 @@ public class ShotController : MonoBehaviour
             Collider hitObjCollider = hitRay.collider;
             TargetController targetController = hitObjCollider.gameObject.GetComponent<TargetController>();
 
-            Instantiate(shotEffect, this.transform.position, Quaternion.identity);
-            Instantiate(shotReachEffect, hitObjPosition, Quaternion.identity);
-
+            ShotEffect(hitObjPosition);
+            
             if (hitObjCollider.gameObject.tag == "HeadMarker")
             {
                 targetController = hitObjCollider.gameObject.transform.parent.GetComponent<TargetController>();
                 targetController.HitHeadMarker(hitObjPosition);
-                targetController.HitTarget();
+                targetController.HitTarget(); 
             }
             else if (targetController != null)
             {
                 targetController.HitTarget();
+            }
+
+            if(hitObjCollider.gameObject.tag == "Player")
+            {
+                hitObjCollider.gameObject.GetPhotonView().RPC("HitPlayer",PhotonTargets.All); 
             }
         }
     }
 
     private void ReloadBullet()
     {
-        if (_bulletBox == 0) return;
+        if (BulletBox == 0) return;
 
         if (shotInterval < SHOT_BORDER_TIME) return;
 
         if (reloadInterval < RELOAD_BORDER_TIME) return;
 
-        if (_bullet >= BULLET_STOCK_FULL) return;
+        if (Bullet >= BULLET_STOCK_FULL) return;
 
         reloadInterval = 0;
         gunAudioSource.PlayOneShot(reloadSound);
 
-        for (int i = 1; _bullet < BULLET_STOCK_FULL; ++i)
+        for (int i = 1; Bullet < BULLET_STOCK_FULL; ++i)
         {
-            if (_bulletBox > 0)
+            if (BulletBox > 0)
             {
-                _bullet += 1;
-                _bulletBox -= 1;
+                Bullet += 1;
+                BulletBox -= 1;
             }
         }
     }
@@ -117,14 +125,30 @@ public class ShotController : MonoBehaviour
         if (!_snipeMode)
         {
             Camera.main.fieldOfView = ZOOM_IN_SCOPE;
-            scopeImage.gameObject.SetActive(true);
+            SwitchScopeActive();
             _snipeMode = true;
         }
         else
         {
             Camera.main.fieldOfView = ZOOM_OUT_SCOPE;
-            scopeImage.gameObject.SetActive(false);
+            SwitchScopeInactive();
             _snipeMode = false;
         }
+    }
+
+    private void ShotEffect(Vector3 hitObjPosition)
+    {
+        PhotonNetwork.Instantiate("shotEffect",this.transform.position, Quaternion.identity,0);
+        PhotonNetwork.Instantiate("shotReachEffect", hitObjPosition, Quaternion.identity,0);
+    }
+
+    public void SwitchScopeActive()
+    {
+        scopeImage.enabled = true;
+    }
+
+    private void SwitchScopeInactive()
+    {
+        scopeImage.enabled = false;
     }
 }

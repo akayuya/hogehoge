@@ -6,25 +6,27 @@ public class TargetController : MonoBehaviour
 {
     [SerializeField] Animator targetMotion;
 
-    public bool _hitHeadMarker;
-    public Vector3 hitPosition;
+    public bool HasHitHeadMarker {get; set;}
+
+    public Vector3 HitPosition {get; private set;}
+
     private bool _isDead;
 
     private const int END_REVIVE_MOTION_INTERVAL = 5;
     private const int TARGET_HP_FULL = 5;
     private int _targetHP = 5;
 
-    private void Dead()
+    private void DeadTarget()
     {
         if (_targetHP != 0) return;
 
         _isDead = true;
         targetMotion.SetBool("IsCrushTarget", _isDead);
 
-        StartCoroutine(Revive());
+        StartCoroutine(ReviveTarget());
     }
 　
-    private IEnumerator Revive()
+    private IEnumerator ReviveTarget()
     {
         if (!_isDead) yield break;
 
@@ -41,7 +43,7 @@ public class TargetController : MonoBehaviour
         if (_targetHP > 0) return;
 
         _targetHP = TARGET_HP_FULL;
-        print(_targetHP + "HP回復");
+        print(_targetHP + "TargetHP回復");
     }
 
     public void HitTarget()
@@ -49,10 +51,10 @@ public class TargetController : MonoBehaviour
         if (_isDead) return;
 
         _targetHP--;
-        print(_targetHP);
+        print("TargetHP" + _targetHP);
         if (_targetHP == 0)
         {
-            Dead();
+            DeadTarget();
         }
     }
 
@@ -60,7 +62,7 @@ public class TargetController : MonoBehaviour
     {
         if (_isDead) return;
 
-        hitPosition = hitPos;
-        _hitHeadMarker = true;
+        HitPosition = hitPos;
+        HasHitHeadMarker = true;
     }
 }

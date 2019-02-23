@@ -6,15 +6,19 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] ScoreController scoreController;
     [SerializeField] TargetController targetController;
-    [SerializeField] ShotController shotController;
+    [SerializeField] SpawnController spawnController;
+    [SerializeField] PhotonController photonController;
+
     [SerializeField] UIManager uiManager;
     [SerializeField] BoxCollider headMarkerBoxCollider;
     private Vector3 headMarkerCenter;
 
 
+    private PlayerController playerController;
     private float _timeLimit;
     private const int TIME_LIMIT = 90;
     private const int BULLET_STOCK_FIRST = 30;
+
 
     void Start()
     {
@@ -23,13 +27,21 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        _timeLimit = TIME_LIMIT - Time.time;
-        uiManager.UpdateText(_timeLimit, scoreController._score, shotController._bulletBox, shotController._bullet, BULLET_STOCK_FIRST);
+        if(!photonController.Joined) return;
 
-        if (targetController._hitHeadMarker)
+        if(spawnController.PlayerController == null) 
         {
-            scoreController.CalcScore(headMarkerCenter, targetController.hitPosition);
-            targetController._hitHeadMarker = false;
+            playerController =  spawnController.SpawnPlayer();
+            return;
+        }
+
+        _timeLimit = TIME_LIMIT - Time.time;
+        uiManager.UpdateText(_timeLimit, scoreController._score, playerController.ShotController.BulletBox, playerController.ShotController.Bullet, BULLET_STOCK_FIRST,playerController.PlayerHP);
+
+        if (targetController.HasHitHeadMarker)
+        {
+            scoreController.CalcScore(headMarkerCenter, targetController.HitPosition);
+            targetController.HasHitHeadMarker = false;
         }
     }
 }
