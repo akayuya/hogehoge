@@ -19,7 +19,7 @@ public class SpawnController : MonoBehaviour
         if(PlayerController.PlayerHP == 0) DeadPlayer();
     }
 
-    public void SpawnPlayer()
+    public PlayerController SpawnPlayer()
     {
         Vector3 playerStartPos = new Vector3(3f, 1f, 3f);
 
@@ -31,6 +31,8 @@ public class SpawnController : MonoBehaviour
         PlayerController = myPlayer.gameObject.GetComponent<PlayerController>();
 
         PlayerController.View.owner.NickName = "Player" + PlayerController.View.ownerId;
+        
+        return PlayerController;
     }
 
     private void DeadPlayer()
